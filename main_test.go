@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/go-xorm/core"
-	"github.com/nullbio/boilbench/mimic"
+	"github.com/vattle/boilbench/mimic"
 )
 
 func jetQuery() mimic.QueryResult {

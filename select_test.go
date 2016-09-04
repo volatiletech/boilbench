@@ -9,11 +9,11 @@ import (
 	"github.com/go-xorm/xorm"
 	"github.com/jinzhu/gorm"
 	"github.com/jmoiron/sqlx"
-	"github.com/nullbio/boilbench/gorms"
-	"github.com/nullbio/boilbench/gorps"
-	"github.com/nullbio/boilbench/mimic"
-	"github.com/nullbio/boilbench/models"
-	"github.com/nullbio/boilbench/xorms"
+	"github.com/vattle/boilbench/gorms"
+	"github.com/vattle/boilbench/gorps"
+	"github.com/vattle/boilbench/mimic"
+	"github.com/vattle/boilbench/models"
+	"github.com/vattle/boilbench/xorms"
 	"github.com/vattle/sqlboiler/boil/qm"
 )
 
