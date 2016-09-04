@@ -1,5 +1,9 @@
 ## SQLBoiler Benchmarks
 
+### Requirements
+
+These tests require go1.7
+
 ### Instructions
 
 1. Install `sqlboiler`: `go get -u -t github.com/vattle/sqlboiler`
