@@ -8,7 +8,6 @@ import (
 
 	"github.com/go-xorm/xorm"
 	"github.com/jinzhu/gorm"
-	"github.com/jmoiron/sqlx"
 	"github.com/vattle/boilbench/gorms"
 	"github.com/vattle/boilbench/gorps"
 	"github.com/vattle/boilbench/mimic"
@@ -104,26 +103,6 @@ func BenchmarkBoilSelectAll(b *testing.B) {
 	})
 }
 
-func BenchmarkSQLXSelectAll(b *testing.B) {
-	query := jetQuery()
-	mimic.NewQuery(query)
-
-	db, err := sqlx.Open("mimic", "")
-	if err != nil {
-		panic(err)
-	}
-
-	b.Run("sqlx", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			var slice []models.Jet
-			err = db.Select(&slice, "select * from jets")
-			if err != nil {
-				b.Fatal(err)
-			}
-		}
-	})
-}
-
 func BenchmarkGORMSelectSubset(b *testing.B) {
 	var store []gorms.Jet
 	query := jetQuery()
@@ -204,26 +183,6 @@ func BenchmarkBoilSelectSubset(b *testing.B) {
 	b.Run("boil", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			_, err = models.Jets(db, qm.Select("id, name, color, uuid, identifier, cargo, manifest")).All()
-			if err != nil {
-				b.Fatal(err)
-			}
-		}
-	})
-}
-
-func BenchmarkSQLXSelectSubset(b *testing.B) {
-	query := jetQuery()
-	mimic.NewQuery(query)
-
-	db, err := sqlx.Open("mimic", "")
-	if err != nil {
-		panic(err)
-	}
-
-	b.Run("sqlx", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			var slice []models.Jet
-			err = db.Select(&slice, "select id, name, color, uuid, identifier, cargo, manifest")
 			if err != nil {
 				b.Fatal(err)
 			}
@@ -338,47 +297,6 @@ func BenchmarkBoilSelectComplex(b *testing.B) {
 				qm.GroupBy("id"),
 				qm.Offset(1),
 			).All()
-			if err != nil {
-				b.Fatal(err)
-			}
-		}
-	})
-}
-
-func BenchmarkSQLXSelectComplex(b *testing.B) {
-	query := jetQuery()
-	query.NumInput = 2
-	mimic.NewQuery(query)
-
-	db, err := sqlx.Open("mimic", "")
-	if err != nil {
-		panic(err)
-	}
-
-	b.Run("sqlx", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			var slice []models.Jet
-			err = db.Select(&slice, "select id, name, color, uuid, identifier, cargo, manifest where id > ? and name <> ? limit 1 group by id offset 1", 1, "thing")
-			if err != nil {
-				b.Fatal(err)
-			}
-		}
-	})
-}
-
-func BenchmarkBoilSelectAllNormalSlice(b *testing.B) {
-	query := jetQuery()
-	mimic.NewQuery(query)
-
-	db, err := sql.Open("mimic", "")
-	if err != nil {
-		panic(err)
-	}
-
-	b.Run("boil", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			var jet []models.Jet
-			err = models.Jets(db).Bind(&jet)
 			if err != nil {
 				b.Fatal(err)
 			}

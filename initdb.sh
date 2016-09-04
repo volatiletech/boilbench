@@ -17,4 +17,4 @@ psql -U postgres boilbench -f schema.sql --quiet || { exit 1; }
 go install github.com/vattle/sqlboiler
 
 # Generate models
-sqlboiler -o ./models postgres
+sqlboiler -o ./models postgres -t "db"
