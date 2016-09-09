@@ -24,3 +24,5 @@ These tests require go1.7
 ```
 
 Graphs can be found in the [SQLBoiler](https://github.com/vattle/sqlboiler) readme.
+
+The homepage for the [SQLBoiler](https://github.com/vattle/sqlboiler)  [Golang ORM](https://github.com/vattle/sqlboiler) generator is located at: https://github.com/vattle/sqlboiler 
