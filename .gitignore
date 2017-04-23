@@ -4,3 +4,5 @@ boilbench
 benches
 *.test
 sqlboiler.toml
+/graphs
+/graph_data

@@ -8,6 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/vattle/boilbench/gorms"
 	"github.com/vattle/boilbench/gorps"
+	"github.com/vattle/boilbench/kallaxes"
 	"github.com/vattle/boilbench/mimic"
 	"github.com/vattle/boilbench/models"
 	"github.com/vattle/boilbench/xorms"
@@ -85,6 +86,32 @@ func BenchmarkXORMDelete(b *testing.B) {
 	b.Run("xorm", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			_, err := xormdb.Delete(&store)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}
+
+func BenchmarkKallaxDelete(b *testing.B) {
+	store := kallaxes.Jet{
+		ID: 1,
+	}
+
+	exec := jetExec()
+	exec.NumInput = -1
+	mimic.NewResult(exec)
+
+	db, err := sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+
+	jetStore := kallaxes.NewJetStore(db)
+
+	b.Run("kallax", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			err := jetStore.Delete(&store)
 			if err != nil {
 				b.Fatal(err)
 			}

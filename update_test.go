@@ -2,12 +2,14 @@ package main
 
 import (
 	"database/sql"
+	"database/sql/driver"
 	"testing"
 
 	"github.com/go-xorm/xorm"
 	"github.com/jinzhu/gorm"
 	"github.com/vattle/boilbench/gorms"
 	"github.com/vattle/boilbench/gorps"
+	"github.com/vattle/boilbench/kallaxes"
 	"github.com/vattle/boilbench/mimic"
 	"github.com/vattle/boilbench/models"
 	"github.com/vattle/boilbench/xorms"
@@ -85,6 +87,48 @@ func BenchmarkXORMUpdate(b *testing.B) {
 	b.Run("xorm", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			_, err := xormdb.Id(store.Id).Update(&store)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}
+
+func BenchmarkKallaxUpdate(b *testing.B) {
+	query := jetQuery()
+	query.NumInput = -1
+	query.Vals = [][]driver.Value{
+		[]driver.Value{
+			int64(1), int64(1), int64(1), "test", nil, "test", "test", []byte("{5}"), []byte("{3}"),
+		},
+	}
+
+	mimic.NewQuery(query)
+
+	db, err := sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+
+	jetStore := kallaxes.NewJetStore(db)
+	store, err := jetStore.FindOne(kallaxes.NewJetQuery())
+	if err != nil {
+		b.Fatal(err)
+	}
+
+	exec := jetExecUpdate()
+	exec.NumInput = -1
+	mimic.NewResult(exec)
+
+	db, err = sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+	jetStore = kallaxes.NewJetStore(db)
+
+	b.Run("kallax", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_, err := jetStore.Update(store, kallaxes.Schema.Jet.Columns()...)
 			if err != nil {
 				b.Fatal(err)
 			}

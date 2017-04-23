@@ -1,5 +1,10 @@
 #!/usr/bin/env sh
 
+set -o errexit
+set -o verbose
+
+export PGUSER="${PGUSER:-postgres}"
+
 # cd into initdb.sh directory
 cd "$(dirname "$0")"
 
@@ -7,14 +12,14 @@ cd "$(dirname "$0")"
 rm -rf models
 
 # Drop and create DB
-dropdb -U postgres boilbench --if-exists || { exit 1; }
-createdb -U postgres -O postgres boilbench || { exit 1; }
+dropdb boilbench --if-exists
+createdb -O "${PGUSER}" boilbench
 
 # Import schema
-psql -U postgres boilbench -f schema.sql --quiet || { exit 1; }
+psql boilbench -f schema.sql --quiet
 
 # Install SQLBoiler
 go install github.com/vattle/sqlboiler
 
 # Generate models
-sqlboiler -o ./models postgres -t "db"
+sqlboiler --wipe --output ./models postgres -t "db"
