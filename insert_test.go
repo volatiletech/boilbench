@@ -6,12 +6,12 @@ import (
 
 	"github.com/go-xorm/xorm"
 	"github.com/jinzhu/gorm"
-	"github.com/vattle/boilbench/gorms"
-	"github.com/vattle/boilbench/gorps"
-	"github.com/vattle/boilbench/kallaxes"
-	"github.com/vattle/boilbench/mimic"
-	"github.com/vattle/boilbench/models"
-	"github.com/vattle/boilbench/xorms"
+	"github.com/volatiletech/boilbench/gorms"
+	"github.com/volatiletech/boilbench/gorps"
+	"github.com/volatiletech/boilbench/kallaxes"
+	"github.com/volatiletech/boilbench/mimic"
+	"github.com/volatiletech/boilbench/models"
+	"github.com/volatiletech/boilbench/xorms"
 	"gopkg.in/gorp.v1"
 	"gopkg.in/src-d/go-kallax.v1"
 )

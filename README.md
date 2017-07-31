@@ -15,6 +15,6 @@ These tests require go1.7
 many runs of these benchmarks. They can be used to help update the sqlboiler
 README with new graphs.
 
-Graphs can be found in the [SQLBoiler](https://github.com/vattle/sqlboiler) readme.
+Graphs can be found in the [SQLBoiler](https://github.com/volatiletech/sqlboiler) readme.
 
-The homepage for the [SQLBoiler](https://github.com/vattle/sqlboiler) is located at: https://github.com/vattle/sqlboiler 
+The homepage for the [SQLBoiler](https://github.com/volatiletech/sqlboiler) is located at: https://github.com/volatiletech/sqlboiler 
