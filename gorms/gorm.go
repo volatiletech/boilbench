@@ -1,7 +1,7 @@
 package gorms
 
 import (
-	"gopkg.in/nullbio/null.v4"
+	"gopkg.in/volatiletech/null.v6"
 
 	// Shutup linter
 	_ "github.com/lib/pq"
