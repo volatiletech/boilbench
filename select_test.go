@@ -128,7 +128,7 @@ func BenchmarkBoilSelectAll(b *testing.B) {
 
 	b.Run("boil", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_, err = models.Jets(db).All()
+			_, err = models.Jets().All(db)
 			if err != nil {
 				b.Fatal(err)
 			}
@@ -255,7 +255,7 @@ func BenchmarkBoilSelectSubset(b *testing.B) {
 
 	b.Run("boil", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_, err = models.Jets(db, qm.Select("id, name, color, uuid, identifier, cargo, manifest")).All()
+			_, err = models.Jets(qm.Select("id, name, color, uuid, identifier, cargo, manifest")).All(db)
 			if err != nil {
 				b.Fatal(err)
 			}
@@ -409,14 +409,13 @@ func BenchmarkBoilSelectComplex(b *testing.B) {
 	b.Run("boil", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			_, err = models.Jets(
-				db,
 				qm.Select("id, name, color, uuid, identifier, cargo, manifest"),
 				qm.Where("id > ?", 1),
 				qm.And("name <> ?", "thing"),
 				qm.Limit(1),
 				qm.GroupBy("id"),
 				qm.Offset(1),
-			).All()
+			).All(db)
 			if err != nil {
 				b.Fatal(err)
 			}

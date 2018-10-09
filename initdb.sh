@@ -19,7 +19,7 @@ createdb -O "${PGUSER}" boilbench
 psql boilbench -f schema.sql --quiet
 
 # Install SQLBoiler
-go install github.com/volatiletech/sqlboiler
+go get github.com/volatiletech/sqlboiler
 
 # Generate models
-sqlboiler --wipe --output ./models postgres -t "db"
+sqlboiler --wipe --no-context --output ./models psql -t "db"

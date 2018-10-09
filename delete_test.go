@@ -135,7 +135,7 @@ func BenchmarkBoilDelete(b *testing.B) {
 
 	b.Run("boil", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			err := store.Delete(db)
+			_, err := store.Delete(db)
 			if err != nil {
 				b.Fatal(err)
 			}
