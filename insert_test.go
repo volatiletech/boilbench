@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"testing"
 
+	"github.com/volatiletech/sqlboiler/boil"
+
 	"github.com/go-xorm/xorm"
 	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"
@@ -141,7 +143,7 @@ func BenchmarkBoilInsert(b *testing.B) {
 
 	b.Run("boil", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			err := store.Insert(db)
+			err := store.Insert(db, boil.Infer())
 			if err != nil {
 				b.Fatal(err)
 			}

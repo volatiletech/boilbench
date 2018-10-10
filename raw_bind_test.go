@@ -164,7 +164,7 @@ func BenchmarkBoilRawBind(b *testing.B) {
 	b.Run("boil", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			var slice []models.Jet
-			err = queries.Raw(db, "select * from jets").Bind(&slice)
+			err = queries.Raw("select * from jets").Bind(nil, db, &slice)
 			if err != nil {
 				b.Fatal(err)
 			}
