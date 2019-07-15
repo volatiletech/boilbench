@@ -1,7 +1,7 @@
 package xorms
 
 import (
-	"gopkg.in/volatiletech/null.v6"
+	"github.com/volatiletech/null"
 
 	// Shutup linter
 	_ "github.com/lib/pq"

@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/go-xorm/core"
+	"xorm.io/core"
 	"github.com/volatiletech/boilbench/mimic"
 )
 
@@ -144,6 +144,9 @@ func jetExecUpdate() mimic.QueryResult {
 func TestMain(m *testing.M) {
 	// Register the mimic driver for Xorm
 	core.RegisterDriver("mimic", &mimic.XormDriver{})
+	if core.QueryDriver("mimic") == nil {
+		panic("failed to register xorm driver")
+	}
 	code := m.Run()
 	os.Exit(code)
 }

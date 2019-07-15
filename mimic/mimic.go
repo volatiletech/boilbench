@@ -7,7 +7,7 @@ import (
 	"io"
 	"strconv"
 
-	"github.com/go-xorm/core"
+	"xorm.io/core"
 )
 
 var dsns = map[string]QueryResult{}

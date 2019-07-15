@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/go-xorm/xorm"
+	"xorm.io/xorm"
 	"github.com/jinzhu/gorm"
 	"github.com/jmoiron/sqlx"
 	"github.com/volatiletech/boilbench/gorms"
