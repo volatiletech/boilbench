@@ -6,3 +6,4 @@ benches
 sqlboiler.toml
 /graphs
 /graph_data
+/.idea
