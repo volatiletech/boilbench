@@ -1,0 +1,5 @@
+[psql]
+dbname= "boilbench"
+user = "postgres"
+pass = "postgres"
+host = "localhost"
