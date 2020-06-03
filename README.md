@@ -8,6 +8,14 @@ These tests require go1.7
 
 1. Clone this repository.
 1. Create a `sqlboiler.toml` in the root directory.
+Example content of config file:
+```
+[psql]
+dbname= "boilbench"
+user = "postgres"
+pass = "postgres"
+host = "localhost"
+```
 1. Run `./initdb.sh` to create your db and generate your models folder.
 1. Run the benches: `go test -bench . -benchmem`
 
