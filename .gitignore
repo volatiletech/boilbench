@@ -6,3 +6,4 @@ benches
 /graphs
 /graph_data
 /.idea
+sqlc/generated

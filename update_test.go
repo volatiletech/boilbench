@@ -1,11 +1,10 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"database/sql/driver"
 	"testing"
-
-	"github.com/volatiletech/sqlboiler/boil"
 
 	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"
@@ -13,7 +12,9 @@ import (
 	"github.com/volatiletech/boilbench/kallaxes"
 	"github.com/volatiletech/boilbench/mimic"
 	"github.com/volatiletech/boilbench/models"
+	sqlc "github.com/volatiletech/boilbench/sqlc/generated"
 	"github.com/volatiletech/boilbench/xorms"
+	"github.com/volatiletech/sqlboiler/boil"
 	gorp "gopkg.in/gorp.v1"
 	"xorm.io/xorm"
 )
@@ -155,6 +156,28 @@ func BenchmarkBoilUpdate(b *testing.B) {
 	b.Run("boil", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			_, err := store.Update(db, boil.Infer())
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}
+
+func BenchmarkSqlcUpdate(b *testing.B) {
+	exec := jetExecUpdate()
+	exec.NumInput = -1
+	mimic.NewResult(exec)
+
+	db, err := sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+
+	dbc := sqlc.New(db)
+
+	b.Run("sqlc", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			err := dbc.UpdateJets(context.Background(), sqlc.UpdateJetsParams{ID: 1})
 			if err != nil {
 				b.Fatal(err)
 			}

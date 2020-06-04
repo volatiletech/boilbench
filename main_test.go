@@ -33,6 +33,30 @@ func jetQuery() mimic.QueryResult {
 		},
 	}
 }
+func jetQuerySubset() mimic.QueryResult {
+	return mimic.QueryResult{
+		Query: &mimic.Query{
+			Cols: []string{"id", "name", "color", "uuid", "identifier", "cargo", "manifest"},
+			Vals: [][]driver.Value{
+				[]driver.Value{
+					int64(1), "test", nil, "test", "test", []byte("test"), []byte("test"),
+				},
+				[]driver.Value{
+					int64(2), "test", nil, "test", "test", []byte("test"), []byte("test"),
+				},
+				[]driver.Value{
+					int64(3), "test", nil, "test", "test", []byte("test"), []byte("test"),
+				},
+				[]driver.Value{
+					int64(4), "test", nil, "test", "test", []byte("test"), []byte("test"),
+				},
+				[]driver.Value{
+					int64(5), "test", nil, "test", "test", []byte("test"), []byte("test"),
+				},
+			},
+		},
+	}
+}
 
 func pilotQuery() mimic.QueryResult {
 	return mimic.QueryResult{

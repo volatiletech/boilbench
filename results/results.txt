@@ -1,0 +1,49 @@
+BenchmarkGORMDelete/gorm-12               107407             11856 ns/op            6076 B/op        119 allocs/op
+BenchmarkGORPDelete/gorp-12              1000000              1010 ns/op             352 B/op         13 allocs/op
+BenchmarkXORMDelete/xorm-12               114642              9602 ns/op            3162 B/op        108 allocs/op
+BenchmarkKallaxDelete/kallax-12          1844545               739 ns/op             240 B/op          9 allocs/op
+BenchmarkBoilDelete/boil-12              2071381               635 ns/op             168 B/op          8 allocs/op
+BenchmarkSqlcDelete/sqlc-12              2252282               599 ns/op             168 B/op          8 allocs/op
+
+BenchmarkGORMInsert/gorm-12                68902             17582 ns/op            9247 B/op        172 allocs/op
+BenchmarkGORPInsert/gorp-12               456780              3317 ns/op            1400 B/op         31 allocs/op
+BenchmarkXORMInsert/xorm-12               143203             11513 ns/op            4162 B/op        100 allocs/op
+BenchmarkKallaxInsert/kallax-12           256366              4075 ns/op            1921 B/op         37 allocs/op
+BenchmarkBoilInsert/boil-12               506725              2275 ns/op             968 B/op         21 allocs/op
+BenchmarkSqlcInsert/sqlc-12               879657              1550 ns/op             792 B/op          9 allocs/op
+
+BenchmarkGORMRawBind/gorm-12               18714             68045 ns/op           29465 B/op        461 allocs/op
+BenchmarkGORPRawBind/gorp-12               65134             20301 ns/op            7276 B/op        218 allocs/op
+BenchmarkXORMRawBind/xorm-12               22180             52290 ns/op           14876 B/op        391 allocs/op
+BenchmarkKallaxRawBind/kallax-12          228848              6134 ns/op            4104 B/op         31 allocs/op
+BenchmarkSQLXRawBind/sqlx-12              162781              9674 ns/op            4360 B/op         36 allocs/op
+BenchmarkBoilRawBind/boil-12              155763              8456 ns/op            4307 B/op         47 allocs/op
+BenchmarkSqlcRawBind/sqlc-12              247754              5426 ns/op            3416 B/op         28 allocs/op
+
+BenchmarkGORMSelectAll/gorm-12             17289             65961 ns/op           26616 B/op        416 allocs/op
+BenchmarkGORPSelectAll/gorp-12             63620             21441 ns/op            7276 B/op        218 allocs/op
+BenchmarkXORMSelectAll/xorm-12             24260             53990 ns/op           15558 B/op        406 allocs/op
+BenchmarkKallaxSelectAll/kallax-12        100752             16795 ns/op            6660 B/op        127 allocs/op
+BenchmarkBoilSelectAll/boil-12            130489             10507 ns/op            3230 B/op         60 allocs/op
+BenchmarkSqlcSelectAll/sqlc-12            245605              5675 ns/op            3416 B/op         28 allocs/op
+
+BenchmarkGORMSelectSubset/gorm-12          22142             59118 ns/op           23881 B/op        399 allocs/op
+BenchmarkGORPSelectSubset/gorp-12          77014             18937 ns/op            6604 B/op        180 allocs/op
+BenchmarkXORMSelectSubset/xorm-12          30441             42720 ns/op           12264 B/op        347 allocs/op
+BenchmarkKallaxSelectSubset/kallax-12             104647             15100 ns/op            6011 B/op        119 allocs/op
+BenchmarkBoilSelectSubset/boil-12                 130470              8696 ns/op            3149 B/op         64 allocs/op
+BenchmarkSqlcSelectSubset/sqlc-12                 243462              4765 ns/op            3064 B/op         28 allocs/op
+
+BenchmarkGORMSelectComplex/gorm-12                 17706             64396 ns/op           30522 B/op        486 allocs/op
+BenchmarkGORPSelectComplex/gorp-12                 69640             20028 ns/op            6916 B/op        186 allocs/op
+BenchmarkXORMSelectComplex/xorm-12                 24969             46004 ns/op           13769 B/op        392 allocs/op
+BenchmarkKallaxSelectComplex/kallax-12             49276             28675 ns/op            9894 B/op        201 allocs/op
+BenchmarkBoilSelectComplex/boil-12                120300             11710 ns/op            4068 B/op         90 allocs/op
+BenchmarkSqlcSelectComplex/sqlc-12                295191              4977 ns/op            3240 B/op         34 allocs/op
+
+BenchmarkGORMUpdate/gorm-12                        52429             22164 ns/op           10151 B/op        228 allocs/op
+BenchmarkGORPUpdate/gorp-12                       398826              3222 ns/op            1520 B/op         33 allocs/op
+BenchmarkXORMUpdate/xorm-12                       138291             10542 ns/op            3618 B/op        114 allocs/op
+BenchmarkKallaxUpdate/kallax-12                   329041              4466 ns/op            2137 B/op         47 allocs/op
+BenchmarkBoilUpdate/boil-12                       774830              1721 ns/op             920 B/op         16 allocs/op
+BenchmarkSqlcUpdate/sqlc-12                      1000000              1296 ns/op             792 B/op          9 allocs/op
