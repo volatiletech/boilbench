@@ -3,9 +3,9 @@
 package tools
 
 import (
+	_ "github.com/glerchundi/sqlboiler-crdb"
 	_ "github.com/kyleconroy/sqlc/cmd/sqlc"
 	_ "github.com/volatiletech/sqlboiler"
-	_ "github.com/volatiletech/sqlboiler/drivers/sqlboiler-psql"
 )
 
 /*

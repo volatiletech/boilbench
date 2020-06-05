@@ -1,5 +1,5 @@
-[psql]
+[crdb]
 dbname= "boilbench"
-user = "postgres"
-pass = "postgres"
+user = "root"
+pass = ""
 host = "localhost"
