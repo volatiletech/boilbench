@@ -7,7 +7,8 @@ require (
 	github.com/Masterminds/squirrel v1.4.0 // indirect
 	github.com/friendsofgo/errors v0.9.2
 	github.com/glerchundi/sqlboiler-crdb v0.0.0-20200507094411-785f9766376c
-	github.com/go-sql-driver/mysql v1.5.1-0.20200311113236-681ffa848bae // indirect
+	github.com/go-pg/pg/v10 v10.0.0-beta.1
+	github.com/go-sql-driver/mysql v1.5.1-0.20200311113236-681ffa848bae
 	github.com/gofrs/uuid v3.3.0+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/jcmturner/gokrb5/v8 v8.3.0 // indirect

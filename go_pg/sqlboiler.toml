@@ -1,0 +1,11 @@
+[psql]
+dbname= "boilbench"
+user = "postgres"
+pass = "postgres"
+host = "localhost"
+sslmode = "disable"
+[crdb]
+dbname= "boilbench"
+user = "root"
+pass = ""
+host = "localhost"
