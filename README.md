@@ -3,6 +3,7 @@
 ### Requirements
 
 These tests require go1.11 (go1.11 has support for go modules that are used here, go1.14 is recommended as current benchmarks were run using go1.14)
+and installed docker
 
 ### Instructions
 
