@@ -6,9 +6,6 @@ set -o verbose
 # cd into initdb.sh directory
 cd "$(dirname "$0")"
 
-# Drop sqlboiler models
-rm -rf models
-
 # DB port
 port=26257
 
@@ -28,23 +25,22 @@ sleep 2
 # Create DB
 docker exec -ti ${dockerID} ./cockroach sql --insecure --execute="CREATE DATABASE IF NOT EXISTS boilbench;"
 
-schemaContent=`cat schema.sql`
+schemaContent=`cat cockroach_schema.sql`
 
 # Import schema
 docker exec -ti ${dockerID} ./cockroach sql --insecure --database boilbench --execute="${schemaContent}"
 
-# Install SQLBoiler
-go get github.com/volatiletech/sqlboiler
-
-# Install SQLBoiler Cockroach DB driver
-go get -u -t github.com/glerchundi/sqlboiler-crdb
+# Wait for docker to start
+sleep 2
 
 # Generate models
-sqlboiler --wipe --no-context --output ./models crdb -t "db"
+go generate ./...
+
+go run github.com/volatiletech/sqlboiler --wipe --no-context --output ./boilgenerated crdb -t "db"
+
+DB_URL="postgresql://root@localhost:${port}/boilbench?sslmode=disable" go test -bench . -benchmem
 
 # stop docker
 docker stop ${dockerID}
 docker rm -f ${dockerID}
 
-# Generate sqlc models
-go generate ./sqlc

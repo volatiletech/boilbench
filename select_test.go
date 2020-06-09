@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"database/sql/driver"
 	"testing"
@@ -8,15 +9,16 @@ import (
 	"gopkg.in/gorp.v1"
 	"gopkg.in/src-d/go-kallax.v1"
 
-	"xorm.io/xorm"
 	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
 	"github.com/volatiletech/boilbench/kallaxes"
 	"github.com/volatiletech/boilbench/mimic"
 	"github.com/volatiletech/boilbench/models"
+	sqlc "github.com/volatiletech/boilbench/sqlc/generated"
 	"github.com/volatiletech/boilbench/xorms"
 	"github.com/volatiletech/sqlboiler/queries/qm"
+	"xorm.io/xorm"
 )
 
 func BenchmarkGORMSelectAll(b *testing.B) {
@@ -136,9 +138,28 @@ func BenchmarkBoilSelectAll(b *testing.B) {
 	})
 }
 
+func BenchmarkSqlcSelectAll(b *testing.B) {
+	query := jetQuery()
+	mimic.NewQuery(query)
+
+	db, err := sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+	dbc := sqlc.New(db)
+	b.Run("sqlc", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_, err = dbc.ListJets(context.Background())
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}
+
 func BenchmarkGORMSelectSubset(b *testing.B) {
 	var store []gorms.Jet
-	query := jetQuery()
+	query := jetQuerySubset()
 	mimic.NewQuery(query)
 
 	gormdb, err := gorm.Open("mimic", "")
@@ -158,7 +179,7 @@ func BenchmarkGORMSelectSubset(b *testing.B) {
 }
 
 func BenchmarkGORPSelectSubset(b *testing.B) {
-	query := jetQuery()
+	query := jetQuerySubset()
 	mimic.NewQuery(query)
 
 	db, err := sql.Open("mimic", "")
@@ -184,7 +205,7 @@ func BenchmarkGORPSelectSubset(b *testing.B) {
 }
 
 func BenchmarkXORMSelectSubset(b *testing.B) {
-	query := jetQuery()
+	query := jetQuerySubset()
 	mimic.NewQuery(query)
 
 	xormdb, err := xorm.NewEngine("mimic", "")
@@ -205,7 +226,7 @@ func BenchmarkXORMSelectSubset(b *testing.B) {
 }
 
 func BenchmarkKallaxSelectSubset(b *testing.B) {
-	query := jetQuery()
+	query := jetQuerySubset()
 	query.Cols = []string{"id", "name", "color", "uuid", "identifier", "cargo", "manifest"}
 	query.Vals = [][]driver.Value{
 		[]driver.Value{
@@ -245,7 +266,7 @@ func BenchmarkKallaxSelectSubset(b *testing.B) {
 }
 
 func BenchmarkBoilSelectSubset(b *testing.B) {
-	query := jetQuery()
+	query := jetQuerySubset()
 	mimic.NewQuery(query)
 
 	db, err := sql.Open("mimic", "")
@@ -263,8 +284,29 @@ func BenchmarkBoilSelectSubset(b *testing.B) {
 	})
 }
 
+func BenchmarkSqlcSelectSubset(b *testing.B) {
+	query := jetQuerySubset()
+	mimic.NewQuery(query)
+
+	db, err := sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+
+	dbc := sqlc.New(db)
+
+	b.Run("sqlc", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_, err = dbc.ListJetsSubset(context.Background())
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}
+
 func BenchmarkGORMSelectComplex(b *testing.B) {
-	query := jetQuery()
+	query := jetQuerySubset()
 	query.NumInput = -1
 	mimic.NewQuery(query)
 
@@ -292,7 +334,7 @@ func BenchmarkGORMSelectComplex(b *testing.B) {
 }
 
 func BenchmarkGORPSelectComplex(b *testing.B) {
-	query := jetQuery()
+	query := jetQuerySubset()
 	query.NumInput = -1
 	mimic.NewQuery(query)
 
@@ -322,7 +364,7 @@ func BenchmarkGORPSelectComplex(b *testing.B) {
 }
 
 func BenchmarkXORMSelectComplex(b *testing.B) {
-	query := jetQuery()
+	query := jetQuerySubset()
 	query.NumInput = -1
 	mimic.NewQuery(query)
 
@@ -350,7 +392,7 @@ func BenchmarkXORMSelectComplex(b *testing.B) {
 }
 
 func BenchmarkKallaxSelectComplex(b *testing.B) {
-	query := jetQuery()
+	query := jetQuerySubset()
 	query.NumInput = 2
 	query.Cols = []string{"id", "name", "color", "uuid", "identifier", "cargo", "manifest"}
 	query.Vals = [][]driver.Value{
@@ -397,7 +439,7 @@ func BenchmarkKallaxSelectComplex(b *testing.B) {
 }
 
 func BenchmarkBoilSelectComplex(b *testing.B) {
-	query := jetQuery()
+	query := jetQuerySubset()
 	query.NumInput = -1
 	mimic.NewQuery(query)
 
@@ -416,6 +458,29 @@ func BenchmarkBoilSelectComplex(b *testing.B) {
 				qm.GroupBy("id"),
 				qm.Offset(1),
 			).All(db)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}
+
+func BenchmarkSqlcSelectComplex(b *testing.B) {
+	query := jetQuerySubset()
+	query.NumInput = -1
+	mimic.NewQuery(query)
+
+	db, err := sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+	dbc := sqlc.New(db)
+	b.Run("sqlc", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_, err = dbc.ListJetsComplex(context.Background(), sqlc.ListJetsComplexParams{
+				ID:   1,
+				Name: "thing",
+			})
 			if err != nil {
 				b.Fatal(err)
 			}

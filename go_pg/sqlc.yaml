@@ -1,0 +1,11 @@
+version: "1"
+packages:
+  - name: "sqlc"
+    path: "sqlcgenerated"
+    queries: "queries.sql"
+    schema: "cockroach_schema.sql"
+    engine: "postgresql"
+    emit_json_tags: false
+    emit_prepared_queries: true
+    emit_interface: false
+    emit_exact_table_names: false

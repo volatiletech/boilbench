@@ -1,0 +1,5 @@
+[crdb]
+dbname= "boilbench"
+user = "root"
+pass = ""
+host = "localhost"

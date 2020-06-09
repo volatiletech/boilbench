@@ -1,18 +1,20 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"testing"
 
-	"xorm.io/xorm"
 	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
 	"github.com/volatiletech/boilbench/kallaxes"
 	"github.com/volatiletech/boilbench/mimic"
 	"github.com/volatiletech/boilbench/models"
+	sqlc "github.com/volatiletech/boilbench/sqlc/generated"
 	"github.com/volatiletech/boilbench/xorms"
 	"gopkg.in/gorp.v1"
+	"xorm.io/xorm"
 )
 
 func BenchmarkGORMDelete(b *testing.B) {
@@ -136,6 +138,28 @@ func BenchmarkBoilDelete(b *testing.B) {
 	b.Run("boil", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			_, err := store.Delete(db)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}
+
+func BenchmarkSqlcDelete(b *testing.B) {
+	exec := jetExec()
+	exec.NumInput = -1
+	mimic.NewResult(exec)
+
+	db, err := sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+
+	dbc := sqlc.New(db)
+
+	b.Run("sqlc", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			err := dbc.DeleteJet(context.Background(), 1)
 			if err != nil {
 				b.Fatal(err)
 			}

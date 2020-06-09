@@ -3,6 +3,9 @@ models
 boilbench
 benches
 *.test
-sqlboiler.toml
 /graphs
 /graph_data
+/.idea
+sqlc/generated
+/go_pg/sqlcgenerated/
+/go_pg/boilgenerated/

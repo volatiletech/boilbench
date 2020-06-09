@@ -2,11 +2,11 @@ package main
 
 import (
 	"database/sql/driver"
+	"github.com/volatiletech/boilbench/mimic"
 	"os"
 	"testing"
-
 	"xorm.io/core"
-	"github.com/volatiletech/boilbench/mimic"
+	"xorm.io/xorm/dialects"
 )
 
 func jetQuery() mimic.QueryResult {
@@ -28,6 +28,30 @@ func jetQuery() mimic.QueryResult {
 				},
 				[]driver.Value{
 					int64(5), int64(5), int64(5), "test", nil, "test", "test", []byte("test"), []byte("test"),
+				},
+			},
+		},
+	}
+}
+func jetQuerySubset() mimic.QueryResult {
+	return mimic.QueryResult{
+		Query: &mimic.Query{
+			Cols: []string{"id", "name", "color", "uuid", "identifier", "cargo", "manifest"},
+			Vals: [][]driver.Value{
+				[]driver.Value{
+					int64(1), "test", nil, "test", "test", []byte("test"), []byte("test"),
+				},
+				[]driver.Value{
+					int64(2), "test", nil, "test", "test", []byte("test"), []byte("test"),
+				},
+				[]driver.Value{
+					int64(3), "test", nil, "test", "test", []byte("test"), []byte("test"),
+				},
+				[]driver.Value{
+					int64(4), "test", nil, "test", "test", []byte("test"), []byte("test"),
+				},
+				[]driver.Value{
+					int64(5), "test", nil, "test", "test", []byte("test"), []byte("test"),
 				},
 			},
 		},
@@ -147,6 +171,7 @@ func TestMain(m *testing.M) {
 	if core.QueryDriver("mimic") == nil {
 		panic("failed to register xorm driver")
 	}
+	dialects.RegisterDriver("mimic", &mimic.XormDialectDriver{})
 	code := m.Run()
 	os.Exit(code)
 }

@@ -1,10 +1,10 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"testing"
 
-	"xorm.io/xorm"
 	"github.com/jinzhu/gorm"
 	"github.com/jmoiron/sqlx"
 	"github.com/volatiletech/boilbench/gorms"
@@ -12,9 +12,11 @@ import (
 	"github.com/volatiletech/boilbench/kallaxes"
 	"github.com/volatiletech/boilbench/mimic"
 	"github.com/volatiletech/boilbench/models"
+	sqlc "github.com/volatiletech/boilbench/sqlc/generated"
 	"github.com/volatiletech/boilbench/xorms"
 	"github.com/volatiletech/sqlboiler/queries"
 	"gopkg.in/gorp.v1"
+	"xorm.io/xorm"
 )
 
 func BenchmarkGORMRawBind(b *testing.B) {
@@ -169,6 +171,27 @@ func BenchmarkBoilRawBind(b *testing.B) {
 				b.Fatal(err)
 			}
 			slice = nil
+		}
+	})
+}
+
+func BenchmarkSqlcRawBind(b *testing.B) {
+	query := jetQuery()
+	mimic.NewQuery(query)
+
+	db, err := sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+
+	dbc := sqlc.New(db)
+
+	b.Run("sqlc", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_, err = dbc.ListJets(context.Background())
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 	})
 }
