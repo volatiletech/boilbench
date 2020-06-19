@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"strconv"
+	"xorm.io/xorm/dialects"
 
 	"xorm.io/core"
 )
@@ -18,6 +19,12 @@ type XormDriver struct {
 
 func (x *XormDriver) Parse(a string, b string) (*core.Uri, error) {
 	return &core.Uri{DbType: core.POSTGRES}, nil
+}
+
+type XormDialectDriver struct{}
+
+func (x *XormDialectDriver) Parse(string, string) (*dialects.URI, error) {
+	return &dialects.URI{DBType: core.POSTGRES}, nil
 }
 
 type QueryResult struct {
@@ -50,12 +57,20 @@ type mimicConn struct {
 	Q QueryResult
 }
 
+func (m *mimicConn) Commit() error {
+	return nil
+}
+
+func (m *mimicConn) Rollback() error {
+	return nil
+}
+
 func (m *mimicConn) Prepare(query string) (driver.Stmt, error) {
 	return &mimicStmt{m.Q}, nil
 }
 
 func (m *mimicConn) Close() error              { return nil }
-func (m *mimicConn) Begin() (driver.Tx, error) { return nil, errors.New("tx not supported") }
+func (m *mimicConn) Begin() (driver.Tx, error) { return m, nil }
 
 type mimicStmt struct {
 	Q QueryResult
