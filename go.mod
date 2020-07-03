@@ -8,12 +8,10 @@ require (
 	github.com/gofrs/uuid v3.3.0+incompatible // indirect
 	github.com/jinzhu/gorm v1.9.12
 	github.com/jmoiron/sqlx v1.2.0
-	github.com/kat-co/vala v0.0.0-20170210184112-42e1d8b61f12
 	github.com/lib/pq v1.7.0
 	github.com/satori/go.uuid v1.2.0 // indirect
-	github.com/spf13/viper v1.7.0
+	github.com/spf13/viper v1.7.0 // indirect
 	github.com/volatiletech/null/v8 v8.1.0
-	github.com/volatiletech/randomize v0.0.1
 	github.com/volatiletech/sqlboiler/v4 v4.2.0
 	github.com/volatiletech/strmangle v0.0.1
 	golang.org/x/crypto v0.0.0-20200604202706-70a84ac30bf9 // indirect

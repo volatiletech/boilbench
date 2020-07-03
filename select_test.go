@@ -90,7 +90,7 @@ func BenchmarkXORMSelectAll(b *testing.B) {
 func BenchmarkKallaxSelectAll(b *testing.B) {
 	query := jetQuery()
 	query.Vals = [][]driver.Value{
-		[]driver.Value{
+		{
 			int64(1), int64(1), int64(1), "test", nil, "test", "test", []byte("{5}"), []byte("{3}"),
 		},
 	}
@@ -208,7 +208,7 @@ func BenchmarkKallaxSelectSubset(b *testing.B) {
 	query := jetQuery()
 	query.Cols = []string{"id", "name", "color", "uuid", "identifier", "cargo", "manifest"}
 	query.Vals = [][]driver.Value{
-		[]driver.Value{
+		{
 			int64(1), int64(1), int64(1), "test", "str", nil, "{3}",
 		},
 	}
@@ -354,7 +354,7 @@ func BenchmarkKallaxSelectComplex(b *testing.B) {
 	query.NumInput = 2
 	query.Cols = []string{"id", "name", "color", "uuid", "identifier", "cargo", "manifest"}
 	query.Vals = [][]driver.Value{
-		[]driver.Value{
+		{
 			int64(1), int64(1), int64(1), "test", "str", nil, "{3}",
 		},
 	}

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# This script pretends to be the sqlboiler-psql binary (as sqlboiler requires the driver name to
+# match a specific binary name), and runs sqlboiler-psql via go run in order to use the version specified in go.mod.
+
+exec go run github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-psql "$@"

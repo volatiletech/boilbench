@@ -100,7 +100,7 @@ func BenchmarkKallaxUpdate(b *testing.B) {
 	query := jetQuery()
 	query.NumInput = -1
 	query.Vals = [][]driver.Value{
-		[]driver.Value{
+		{
 			int64(1), int64(1), int64(1), "test", nil, "test", "test", []byte("{5}"), []byte("{3}"),
 		},
 	}

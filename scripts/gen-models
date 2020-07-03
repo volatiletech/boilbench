@@ -1,0 +1,19 @@
+#!/bin/sh -e
+
+cd "${0%/*}/.."
+
+echo "Starting database"
+DOCKER_ID=$(docker run --rm -p 5432:5432 -d -v $PWD/schema.sql:/docker-entrypoint-initdb.d/schema.sql -e POSTGRES_PASSWORD=mysecretpassword postgres)
+
+function kill_container {
+    echo "Killing database"
+    docker kill $DOCKER_ID > /dev/null
+}
+
+trap kill_container EXIT
+
+echo "Waiting for container to be ready"
+while ! curl http://localhost:5432 2>&1 | grep -q '52'; do sleep 1; done
+
+echo "Generating models"
+go run github.com/volatiletech/sqlboiler/v4 ./scripts/sqlboiler-psql --wipe --no-context --no-tests

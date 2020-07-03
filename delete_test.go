@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"testing"
 
-	"xorm.io/xorm"
 	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
@@ -13,6 +12,7 @@ import (
 	"github.com/volatiletech/boilbench/models"
 	"github.com/volatiletech/boilbench/xorms"
 	"gopkg.in/gorp.v1"
+	"xorm.io/xorm"
 )
 
 func BenchmarkGORMDelete(b *testing.B) {

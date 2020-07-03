@@ -132,6 +132,8 @@ func BenchmarkKallaxRawBind(b *testing.B) {
 }
 
 func BenchmarkSQLXRawBind(b *testing.B) {
+	b.Skip("broken")
+
 	query := jetQuery()
 	mimic.NewQuery(query)
 
