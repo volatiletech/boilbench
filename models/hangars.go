@@ -4,6 +4,7 @@
 package models
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"reflect"
@@ -98,7 +99,7 @@ type (
 	// This should generally be used opposed to []Hangar.
 	HangarSlice []*Hangar
 	// HangarHook is the signature for custom Hangar hook methods
-	HangarHook func(boil.Executor, *Hangar) error
+	HangarHook func(context.Context, boil.ContextExecutor, *Hangar) error
 
 	hangarQuery struct {
 		*queries.Query
@@ -138,9 +139,13 @@ var hangarAfterDeleteHooks []HangarHook
 var hangarAfterUpsertHooks []HangarHook
 
 // doBeforeInsertHooks executes all "before insert" hooks.
-func (o *Hangar) doBeforeInsertHooks(exec boil.Executor) (err error) {
+func (o *Hangar) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range hangarBeforeInsertHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -149,9 +154,13 @@ func (o *Hangar) doBeforeInsertHooks(exec boil.Executor) (err error) {
 }
 
 // doBeforeUpdateHooks executes all "before Update" hooks.
-func (o *Hangar) doBeforeUpdateHooks(exec boil.Executor) (err error) {
+func (o *Hangar) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range hangarBeforeUpdateHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -160,9 +169,13 @@ func (o *Hangar) doBeforeUpdateHooks(exec boil.Executor) (err error) {
 }
 
 // doBeforeDeleteHooks executes all "before Delete" hooks.
-func (o *Hangar) doBeforeDeleteHooks(exec boil.Executor) (err error) {
+func (o *Hangar) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range hangarBeforeDeleteHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -171,9 +184,13 @@ func (o *Hangar) doBeforeDeleteHooks(exec boil.Executor) (err error) {
 }
 
 // doBeforeUpsertHooks executes all "before Upsert" hooks.
-func (o *Hangar) doBeforeUpsertHooks(exec boil.Executor) (err error) {
+func (o *Hangar) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range hangarBeforeUpsertHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -182,9 +199,13 @@ func (o *Hangar) doBeforeUpsertHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterInsertHooks executes all "after Insert" hooks.
-func (o *Hangar) doAfterInsertHooks(exec boil.Executor) (err error) {
+func (o *Hangar) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range hangarAfterInsertHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -193,9 +214,13 @@ func (o *Hangar) doAfterInsertHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterSelectHooks executes all "after Select" hooks.
-func (o *Hangar) doAfterSelectHooks(exec boil.Executor) (err error) {
+func (o *Hangar) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range hangarAfterSelectHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -204,9 +229,13 @@ func (o *Hangar) doAfterSelectHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterUpdateHooks executes all "after Update" hooks.
-func (o *Hangar) doAfterUpdateHooks(exec boil.Executor) (err error) {
+func (o *Hangar) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range hangarAfterUpdateHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -215,9 +244,13 @@ func (o *Hangar) doAfterUpdateHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterDeleteHooks executes all "after Delete" hooks.
-func (o *Hangar) doAfterDeleteHooks(exec boil.Executor) (err error) {
+func (o *Hangar) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range hangarAfterDeleteHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -226,9 +259,13 @@ func (o *Hangar) doAfterDeleteHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterUpsertHooks executes all "after Upsert" hooks.
-func (o *Hangar) doAfterUpsertHooks(exec boil.Executor) (err error) {
+func (o *Hangar) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range hangarAfterUpsertHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -261,12 +298,12 @@ func AddHangarHook(hookPoint boil.HookPoint, hangarHook HangarHook) {
 }
 
 // One returns a single hangar record from the query.
-func (q hangarQuery) One(exec boil.Executor) (*Hangar, error) {
+func (q hangarQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Hangar, error) {
 	o := &Hangar{}
 
 	queries.SetLimit(q.Query, 1)
 
-	err := q.Bind(nil, exec, o)
+	err := q.Bind(ctx, exec, o)
 	if err != nil {
 		if errors.Cause(err) == sql.ErrNoRows {
 			return nil, sql.ErrNoRows
@@ -274,7 +311,7 @@ func (q hangarQuery) One(exec boil.Executor) (*Hangar, error) {
 		return nil, errors.Wrap(err, "models: failed to execute a one query for hangars")
 	}
 
-	if err := o.doAfterSelectHooks(exec); err != nil {
+	if err := o.doAfterSelectHooks(ctx, exec); err != nil {
 		return o, err
 	}
 
@@ -282,17 +319,17 @@ func (q hangarQuery) One(exec boil.Executor) (*Hangar, error) {
 }
 
 // All returns all Hangar records from the query.
-func (q hangarQuery) All(exec boil.Executor) (HangarSlice, error) {
+func (q hangarQuery) All(ctx context.Context, exec boil.ContextExecutor) (HangarSlice, error) {
 	var o []*Hangar
 
-	err := q.Bind(nil, exec, &o)
+	err := q.Bind(ctx, exec, &o)
 	if err != nil {
 		return nil, errors.Wrap(err, "models: failed to assign all query results to Hangar slice")
 	}
 
 	if len(hangarAfterSelectHooks) != 0 {
 		for _, obj := range o {
-			if err := obj.doAfterSelectHooks(exec); err != nil {
+			if err := obj.doAfterSelectHooks(ctx, exec); err != nil {
 				return o, err
 			}
 		}
@@ -302,13 +339,13 @@ func (q hangarQuery) All(exec boil.Executor) (HangarSlice, error) {
 }
 
 // Count returns the count of all Hangar records in the query.
-func (q hangarQuery) Count(exec boil.Executor) (int64, error) {
+func (q hangarQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
 	queries.SetCount(q.Query)
 
-	err := q.Query.QueryRow(exec).Scan(&count)
+	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: failed to count hangars rows")
 	}
@@ -317,14 +354,14 @@ func (q hangarQuery) Count(exec boil.Executor) (int64, error) {
 }
 
 // Exists checks if the row exists in the table.
-func (q hangarQuery) Exists(exec boil.Executor) (bool, error) {
+func (q hangarQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
 	queries.SetCount(q.Query)
 	queries.SetLimit(q.Query, 1)
 
-	err := q.Query.QueryRow(exec).Scan(&count)
+	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
 		return false, errors.Wrap(err, "models: failed to check if hangars exists")
 	}
@@ -340,7 +377,7 @@ func Hangars(mods ...qm.QueryMod) hangarQuery {
 
 // FindHangar retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindHangar(exec boil.Executor, iD int, selectCols ...string) (*Hangar, error) {
+func FindHangar(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*Hangar, error) {
 	hangarObj := &Hangar{}
 
 	sel := "*"
@@ -353,7 +390,7 @@ func FindHangar(exec boil.Executor, iD int, selectCols ...string) (*Hangar, erro
 
 	q := queries.Raw(query, iD)
 
-	err := q.Bind(nil, exec, hangarObj)
+	err := q.Bind(ctx, exec, hangarObj)
 	if err != nil {
 		if errors.Cause(err) == sql.ErrNoRows {
 			return nil, sql.ErrNoRows
@@ -366,14 +403,14 @@ func FindHangar(exec boil.Executor, iD int, selectCols ...string) (*Hangar, erro
 
 // Insert a single record using an executor.
 // See boil.Columns.InsertColumnSet documentation to understand column list inference for inserts.
-func (o *Hangar) Insert(exec boil.Executor, columns boil.Columns) error {
+func (o *Hangar) Insert(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) error {
 	if o == nil {
 		return errors.New("models: no hangars provided for insertion")
 	}
 
 	var err error
 
-	if err := o.doBeforeInsertHooks(exec); err != nil {
+	if err := o.doBeforeInsertHooks(ctx, exec); err != nil {
 		return err
 	}
 
@@ -418,15 +455,16 @@ func (o *Hangar) Insert(exec boil.Executor, columns boil.Columns) error {
 	value := reflect.Indirect(reflect.ValueOf(o))
 	vals := queries.ValuesFromMapping(value, cache.valueMapping)
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, cache.query)
-		fmt.Fprintln(boil.DebugWriter, vals)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, cache.query)
+		fmt.Fprintln(writer, vals)
 	}
 
 	if len(cache.retMapping) != 0 {
-		err = exec.QueryRow(cache.query, vals...).Scan(queries.PtrsFromMapping(value, cache.retMapping)...)
+		err = exec.QueryRowContext(ctx, cache.query, vals...).Scan(queries.PtrsFromMapping(value, cache.retMapping)...)
 	} else {
-		_, err = exec.Exec(cache.query, vals...)
+		_, err = exec.ExecContext(ctx, cache.query, vals...)
 	}
 
 	if err != nil {
@@ -439,15 +477,15 @@ func (o *Hangar) Insert(exec boil.Executor, columns boil.Columns) error {
 		hangarInsertCacheMut.Unlock()
 	}
 
-	return o.doAfterInsertHooks(exec)
+	return o.doAfterInsertHooks(ctx, exec)
 }
 
 // Update uses an executor to update the Hangar.
 // See boil.Columns.UpdateColumnSet documentation to understand column list inference for updates.
 // Update does not automatically update the record in case of default values. Use .Reload() to refresh the records.
-func (o *Hangar) Update(exec boil.Executor, columns boil.Columns) (int64, error) {
+func (o *Hangar) Update(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) (int64, error) {
 	var err error
-	if err = o.doBeforeUpdateHooks(exec); err != nil {
+	if err = o.doBeforeUpdateHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 	key := makeCacheKey(columns, nil)
@@ -480,12 +518,13 @@ func (o *Hangar) Update(exec boil.Executor, columns boil.Columns) (int64, error)
 
 	values := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), cache.valueMapping)
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, cache.query)
-		fmt.Fprintln(boil.DebugWriter, values)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, cache.query)
+		fmt.Fprintln(writer, values)
 	}
 	var result sql.Result
-	result, err = exec.Exec(cache.query, values...)
+	result, err = exec.ExecContext(ctx, cache.query, values...)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to update hangars row")
 	}
@@ -501,14 +540,14 @@ func (o *Hangar) Update(exec boil.Executor, columns boil.Columns) (int64, error)
 		hangarUpdateCacheMut.Unlock()
 	}
 
-	return rowsAff, o.doAfterUpdateHooks(exec)
+	return rowsAff, o.doAfterUpdateHooks(ctx, exec)
 }
 
 // UpdateAll updates all rows with the specified column values.
-func (q hangarQuery) UpdateAll(exec boil.Executor, cols M) (int64, error) {
+func (q hangarQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	queries.SetUpdate(q.Query, cols)
 
-	result, err := q.Query.Exec(exec)
+	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to update all for hangars")
 	}
@@ -522,7 +561,7 @@ func (q hangarQuery) UpdateAll(exec boil.Executor, cols M) (int64, error) {
 }
 
 // UpdateAll updates all rows with the specified column values, using an executor.
-func (o HangarSlice) UpdateAll(exec boil.Executor, cols M) (int64, error) {
+func (o HangarSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	ln := int64(len(o))
 	if ln == 0 {
 		return 0, nil
@@ -552,11 +591,12 @@ func (o HangarSlice) UpdateAll(exec boil.Executor, cols M) (int64, error) {
 		strmangle.SetParamNames("\"", "\"", 1, colNames),
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), len(colNames)+1, hangarPrimaryKeyColumns, len(o)))
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, sql)
-		fmt.Fprintln(boil.DebugWriter, args...)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, sql)
+		fmt.Fprintln(writer, args...)
 	}
-	result, err := exec.Exec(sql, args...)
+	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to update all in hangar slice")
 	}
@@ -570,12 +610,12 @@ func (o HangarSlice) UpdateAll(exec boil.Executor, cols M) (int64, error) {
 
 // Upsert attempts an insert using an executor, and does an update or ignore on conflict.
 // See boil.Columns documentation for how to properly use updateColumns and insertColumns.
-func (o *Hangar) Upsert(exec boil.Executor, updateOnConflict bool, conflictColumns []string, updateColumns, insertColumns boil.Columns) error {
+func (o *Hangar) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnConflict bool, conflictColumns []string, updateColumns, insertColumns boil.Columns) error {
 	if o == nil {
 		return errors.New("models: no hangars provided for upsert")
 	}
 
-	if err := o.doBeforeUpsertHooks(exec); err != nil {
+	if err := o.doBeforeUpsertHooks(ctx, exec); err != nil {
 		return err
 	}
 
@@ -657,17 +697,18 @@ func (o *Hangar) Upsert(exec boil.Executor, updateOnConflict bool, conflictColum
 		returns = queries.PtrsFromMapping(value, cache.retMapping)
 	}
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, cache.query)
-		fmt.Fprintln(boil.DebugWriter, vals)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, cache.query)
+		fmt.Fprintln(writer, vals)
 	}
 	if len(cache.retMapping) != 0 {
-		err = exec.QueryRow(cache.query, vals...).Scan(returns...)
+		err = exec.QueryRowContext(ctx, cache.query, vals...).Scan(returns...)
 		if err == sql.ErrNoRows {
 			err = nil // Postgres doesn't return anything when there's no update
 		}
 	} else {
-		_, err = exec.Exec(cache.query, vals...)
+		_, err = exec.ExecContext(ctx, cache.query, vals...)
 	}
 	if err != nil {
 		return errors.Wrap(err, "models: unable to upsert hangars")
@@ -679,28 +720,29 @@ func (o *Hangar) Upsert(exec boil.Executor, updateOnConflict bool, conflictColum
 		hangarUpsertCacheMut.Unlock()
 	}
 
-	return o.doAfterUpsertHooks(exec)
+	return o.doAfterUpsertHooks(ctx, exec)
 }
 
 // Delete deletes a single Hangar record with an executor.
 // Delete will match against the primary key column to find the record to delete.
-func (o *Hangar) Delete(exec boil.Executor) (int64, error) {
+func (o *Hangar) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if o == nil {
 		return 0, errors.New("models: no Hangar provided for delete")
 	}
 
-	if err := o.doBeforeDeleteHooks(exec); err != nil {
+	if err := o.doBeforeDeleteHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 
 	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), hangarPrimaryKeyMapping)
 	sql := "DELETE FROM \"hangars\" WHERE \"id\"=$1"
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, sql)
-		fmt.Fprintln(boil.DebugWriter, args...)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, sql)
+		fmt.Fprintln(writer, args...)
 	}
-	result, err := exec.Exec(sql, args...)
+	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to delete from hangars")
 	}
@@ -710,7 +752,7 @@ func (o *Hangar) Delete(exec boil.Executor) (int64, error) {
 		return 0, errors.Wrap(err, "models: failed to get rows affected by delete for hangars")
 	}
 
-	if err := o.doAfterDeleteHooks(exec); err != nil {
+	if err := o.doAfterDeleteHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 
@@ -718,14 +760,14 @@ func (o *Hangar) Delete(exec boil.Executor) (int64, error) {
 }
 
 // DeleteAll deletes all matching rows.
-func (q hangarQuery) DeleteAll(exec boil.Executor) (int64, error) {
+func (q hangarQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if q.Query == nil {
 		return 0, errors.New("models: no hangarQuery provided for delete all")
 	}
 
 	queries.SetDelete(q.Query)
 
-	result, err := q.Query.Exec(exec)
+	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to delete all from hangars")
 	}
@@ -739,14 +781,14 @@ func (q hangarQuery) DeleteAll(exec boil.Executor) (int64, error) {
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.
-func (o HangarSlice) DeleteAll(exec boil.Executor) (int64, error) {
+func (o HangarSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if len(o) == 0 {
 		return 0, nil
 	}
 
 	if len(hangarBeforeDeleteHooks) != 0 {
 		for _, obj := range o {
-			if err := obj.doBeforeDeleteHooks(exec); err != nil {
+			if err := obj.doBeforeDeleteHooks(ctx, exec); err != nil {
 				return 0, err
 			}
 		}
@@ -761,11 +803,12 @@ func (o HangarSlice) DeleteAll(exec boil.Executor) (int64, error) {
 	sql := "DELETE FROM \"hangars\" WHERE " +
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, hangarPrimaryKeyColumns, len(o))
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, sql)
-		fmt.Fprintln(boil.DebugWriter, args)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, sql)
+		fmt.Fprintln(writer, args)
 	}
-	result, err := exec.Exec(sql, args...)
+	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to delete all from hangar slice")
 	}
@@ -777,7 +820,7 @@ func (o HangarSlice) DeleteAll(exec boil.Executor) (int64, error) {
 
 	if len(hangarAfterDeleteHooks) != 0 {
 		for _, obj := range o {
-			if err := obj.doAfterDeleteHooks(exec); err != nil {
+			if err := obj.doAfterDeleteHooks(ctx, exec); err != nil {
 				return 0, err
 			}
 		}
@@ -788,8 +831,8 @@ func (o HangarSlice) DeleteAll(exec boil.Executor) (int64, error) {
 
 // Reload refetches the object from the database
 // using the primary keys with an executor.
-func (o *Hangar) Reload(exec boil.Executor) error {
-	ret, err := FindHangar(exec, o.ID)
+func (o *Hangar) Reload(ctx context.Context, exec boil.ContextExecutor) error {
+	ret, err := FindHangar(ctx, exec, o.ID)
 	if err != nil {
 		return err
 	}
@@ -800,7 +843,7 @@ func (o *Hangar) Reload(exec boil.Executor) error {
 
 // ReloadAll refetches every row with matching primary key column values
 // and overwrites the original object slice with the newly updated slice.
-func (o *HangarSlice) ReloadAll(exec boil.Executor) error {
+func (o *HangarSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) error {
 	if o == nil || len(*o) == 0 {
 		return nil
 	}
@@ -817,7 +860,7 @@ func (o *HangarSlice) ReloadAll(exec boil.Executor) error {
 
 	q := queries.Raw(sql, args...)
 
-	err := q.Bind(nil, exec, &slice)
+	err := q.Bind(ctx, exec, &slice)
 	if err != nil {
 		return errors.Wrap(err, "models: unable to reload all in HangarSlice")
 	}
@@ -828,15 +871,16 @@ func (o *HangarSlice) ReloadAll(exec boil.Executor) error {
 }
 
 // HangarExists checks if the Hangar row exists.
-func HangarExists(exec boil.Executor, iD int) (bool, error) {
+func HangarExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"hangars\" where \"id\"=$1 limit 1)"
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, sql)
-		fmt.Fprintln(boil.DebugWriter, iD)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, sql)
+		fmt.Fprintln(writer, iD)
 	}
-	row := exec.QueryRow(sql, iD)
+	row := exec.QueryRowContext(ctx, sql, iD)
 
 	err := row.Scan(&exists)
 	if err != nil {

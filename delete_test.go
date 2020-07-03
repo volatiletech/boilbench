@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"testing"
 
@@ -134,8 +135,9 @@ func BenchmarkBoilDelete(b *testing.B) {
 	}
 
 	b.Run("boil", func(b *testing.B) {
+		ctx := context.Background()
 		for i := 0; i < b.N; i++ {
-			_, err := store.Delete(db)
+			_, err := store.Delete(ctx, db)
 			if err != nil {
 				b.Fatal(err)
 			}

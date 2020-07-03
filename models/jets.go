@@ -4,6 +4,7 @@
 package models
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"reflect"
@@ -150,7 +151,7 @@ type (
 	// This should generally be used opposed to []Jet.
 	JetSlice []*Jet
 	// JetHook is the signature for custom Jet hook methods
-	JetHook func(boil.Executor, *Jet) error
+	JetHook func(context.Context, boil.ContextExecutor, *Jet) error
 
 	jetQuery struct {
 		*queries.Query
@@ -190,9 +191,13 @@ var jetAfterDeleteHooks []JetHook
 var jetAfterUpsertHooks []JetHook
 
 // doBeforeInsertHooks executes all "before insert" hooks.
-func (o *Jet) doBeforeInsertHooks(exec boil.Executor) (err error) {
+func (o *Jet) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range jetBeforeInsertHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -201,9 +206,13 @@ func (o *Jet) doBeforeInsertHooks(exec boil.Executor) (err error) {
 }
 
 // doBeforeUpdateHooks executes all "before Update" hooks.
-func (o *Jet) doBeforeUpdateHooks(exec boil.Executor) (err error) {
+func (o *Jet) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range jetBeforeUpdateHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -212,9 +221,13 @@ func (o *Jet) doBeforeUpdateHooks(exec boil.Executor) (err error) {
 }
 
 // doBeforeDeleteHooks executes all "before Delete" hooks.
-func (o *Jet) doBeforeDeleteHooks(exec boil.Executor) (err error) {
+func (o *Jet) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range jetBeforeDeleteHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -223,9 +236,13 @@ func (o *Jet) doBeforeDeleteHooks(exec boil.Executor) (err error) {
 }
 
 // doBeforeUpsertHooks executes all "before Upsert" hooks.
-func (o *Jet) doBeforeUpsertHooks(exec boil.Executor) (err error) {
+func (o *Jet) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range jetBeforeUpsertHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -234,9 +251,13 @@ func (o *Jet) doBeforeUpsertHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterInsertHooks executes all "after Insert" hooks.
-func (o *Jet) doAfterInsertHooks(exec boil.Executor) (err error) {
+func (o *Jet) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range jetAfterInsertHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -245,9 +266,13 @@ func (o *Jet) doAfterInsertHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterSelectHooks executes all "after Select" hooks.
-func (o *Jet) doAfterSelectHooks(exec boil.Executor) (err error) {
+func (o *Jet) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range jetAfterSelectHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -256,9 +281,13 @@ func (o *Jet) doAfterSelectHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterUpdateHooks executes all "after Update" hooks.
-func (o *Jet) doAfterUpdateHooks(exec boil.Executor) (err error) {
+func (o *Jet) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range jetAfterUpdateHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -267,9 +296,13 @@ func (o *Jet) doAfterUpdateHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterDeleteHooks executes all "after Delete" hooks.
-func (o *Jet) doAfterDeleteHooks(exec boil.Executor) (err error) {
+func (o *Jet) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range jetAfterDeleteHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -278,9 +311,13 @@ func (o *Jet) doAfterDeleteHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterUpsertHooks executes all "after Upsert" hooks.
-func (o *Jet) doAfterUpsertHooks(exec boil.Executor) (err error) {
+func (o *Jet) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range jetAfterUpsertHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -313,12 +350,12 @@ func AddJetHook(hookPoint boil.HookPoint, jetHook JetHook) {
 }
 
 // One returns a single jet record from the query.
-func (q jetQuery) One(exec boil.Executor) (*Jet, error) {
+func (q jetQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Jet, error) {
 	o := &Jet{}
 
 	queries.SetLimit(q.Query, 1)
 
-	err := q.Bind(nil, exec, o)
+	err := q.Bind(ctx, exec, o)
 	if err != nil {
 		if errors.Cause(err) == sql.ErrNoRows {
 			return nil, sql.ErrNoRows
@@ -326,7 +363,7 @@ func (q jetQuery) One(exec boil.Executor) (*Jet, error) {
 		return nil, errors.Wrap(err, "models: failed to execute a one query for jets")
 	}
 
-	if err := o.doAfterSelectHooks(exec); err != nil {
+	if err := o.doAfterSelectHooks(ctx, exec); err != nil {
 		return o, err
 	}
 
@@ -334,17 +371,17 @@ func (q jetQuery) One(exec boil.Executor) (*Jet, error) {
 }
 
 // All returns all Jet records from the query.
-func (q jetQuery) All(exec boil.Executor) (JetSlice, error) {
+func (q jetQuery) All(ctx context.Context, exec boil.ContextExecutor) (JetSlice, error) {
 	var o []*Jet
 
-	err := q.Bind(nil, exec, &o)
+	err := q.Bind(ctx, exec, &o)
 	if err != nil {
 		return nil, errors.Wrap(err, "models: failed to assign all query results to Jet slice")
 	}
 
 	if len(jetAfterSelectHooks) != 0 {
 		for _, obj := range o {
-			if err := obj.doAfterSelectHooks(exec); err != nil {
+			if err := obj.doAfterSelectHooks(ctx, exec); err != nil {
 				return o, err
 			}
 		}
@@ -354,13 +391,13 @@ func (q jetQuery) All(exec boil.Executor) (JetSlice, error) {
 }
 
 // Count returns the count of all Jet records in the query.
-func (q jetQuery) Count(exec boil.Executor) (int64, error) {
+func (q jetQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
 	queries.SetCount(q.Query)
 
-	err := q.Query.QueryRow(exec).Scan(&count)
+	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: failed to count jets rows")
 	}
@@ -369,14 +406,14 @@ func (q jetQuery) Count(exec boil.Executor) (int64, error) {
 }
 
 // Exists checks if the row exists in the table.
-func (q jetQuery) Exists(exec boil.Executor) (bool, error) {
+func (q jetQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
 	queries.SetCount(q.Query)
 	queries.SetLimit(q.Query, 1)
 
-	err := q.Query.QueryRow(exec).Scan(&count)
+	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
 		return false, errors.Wrap(err, "models: failed to check if jets exists")
 	}
@@ -414,7 +451,7 @@ func (o *Jet) Pilot(mods ...qm.QueryMod) pilotQuery {
 
 // LoadAirport allows an eager lookup of values, cached into the
 // loaded structs of the objects. This is for an N-1 relationship.
-func (jetL) LoadAirport(e boil.Executor, singular bool, maybeJet interface{}, mods queries.Applicator) error {
+func (jetL) LoadAirport(ctx context.Context, e boil.ContextExecutor, singular bool, maybeJet interface{}, mods queries.Applicator) error {
 	var slice []*Jet
 	var object *Jet
 
@@ -461,7 +498,7 @@ func (jetL) LoadAirport(e boil.Executor, singular bool, maybeJet interface{}, mo
 		mods.Apply(query)
 	}
 
-	results, err := query.Query(e)
+	results, err := query.QueryContext(ctx, e)
 	if err != nil {
 		return errors.Wrap(err, "failed to eager load Airport")
 	}
@@ -480,7 +517,7 @@ func (jetL) LoadAirport(e boil.Executor, singular bool, maybeJet interface{}, mo
 
 	if len(jetAfterSelectHooks) != 0 {
 		for _, obj := range resultSlice {
-			if err := obj.doAfterSelectHooks(e); err != nil {
+			if err := obj.doAfterSelectHooks(ctx, e); err != nil {
 				return err
 			}
 		}
@@ -518,7 +555,7 @@ func (jetL) LoadAirport(e boil.Executor, singular bool, maybeJet interface{}, mo
 
 // LoadPilot allows an eager lookup of values, cached into the
 // loaded structs of the objects. This is for an N-1 relationship.
-func (jetL) LoadPilot(e boil.Executor, singular bool, maybeJet interface{}, mods queries.Applicator) error {
+func (jetL) LoadPilot(ctx context.Context, e boil.ContextExecutor, singular bool, maybeJet interface{}, mods queries.Applicator) error {
 	var slice []*Jet
 	var object *Jet
 
@@ -565,7 +602,7 @@ func (jetL) LoadPilot(e boil.Executor, singular bool, maybeJet interface{}, mods
 		mods.Apply(query)
 	}
 
-	results, err := query.Query(e)
+	results, err := query.QueryContext(ctx, e)
 	if err != nil {
 		return errors.Wrap(err, "failed to eager load Pilot")
 	}
@@ -584,7 +621,7 @@ func (jetL) LoadPilot(e boil.Executor, singular bool, maybeJet interface{}, mods
 
 	if len(jetAfterSelectHooks) != 0 {
 		for _, obj := range resultSlice {
-			if err := obj.doAfterSelectHooks(e); err != nil {
+			if err := obj.doAfterSelectHooks(ctx, e); err != nil {
 				return err
 			}
 		}
@@ -623,10 +660,10 @@ func (jetL) LoadPilot(e boil.Executor, singular bool, maybeJet interface{}, mods
 // SetAirport of the jet to the related item.
 // Sets o.R.Airport to related.
 // Adds o to related.R.Jets.
-func (o *Jet) SetAirport(exec boil.Executor, insert bool, related *Airport) error {
+func (o *Jet) SetAirport(ctx context.Context, exec boil.ContextExecutor, insert bool, related *Airport) error {
 	var err error
 	if insert {
-		if err = related.Insert(exec, boil.Infer()); err != nil {
+		if err = related.Insert(ctx, exec, boil.Infer()); err != nil {
 			return errors.Wrap(err, "failed to insert into foreign table")
 		}
 	}
@@ -638,11 +675,12 @@ func (o *Jet) SetAirport(exec boil.Executor, insert bool, related *Airport) erro
 	)
 	values := []interface{}{related.ID, o.ID}
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, updateQuery)
-		fmt.Fprintln(boil.DebugWriter, values)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, updateQuery)
+		fmt.Fprintln(writer, values)
 	}
-	if _, err = exec.Exec(updateQuery, values...); err != nil {
+	if _, err = exec.ExecContext(ctx, updateQuery, values...); err != nil {
 		return errors.Wrap(err, "failed to update local table")
 	}
 
@@ -669,10 +707,10 @@ func (o *Jet) SetAirport(exec boil.Executor, insert bool, related *Airport) erro
 // SetPilot of the jet to the related item.
 // Sets o.R.Pilot to related.
 // Adds o to related.R.Jets.
-func (o *Jet) SetPilot(exec boil.Executor, insert bool, related *Pilot) error {
+func (o *Jet) SetPilot(ctx context.Context, exec boil.ContextExecutor, insert bool, related *Pilot) error {
 	var err error
 	if insert {
-		if err = related.Insert(exec, boil.Infer()); err != nil {
+		if err = related.Insert(ctx, exec, boil.Infer()); err != nil {
 			return errors.Wrap(err, "failed to insert into foreign table")
 		}
 	}
@@ -684,11 +722,12 @@ func (o *Jet) SetPilot(exec boil.Executor, insert bool, related *Pilot) error {
 	)
 	values := []interface{}{related.ID, o.ID}
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, updateQuery)
-		fmt.Fprintln(boil.DebugWriter, values)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, updateQuery)
+		fmt.Fprintln(writer, values)
 	}
-	if _, err = exec.Exec(updateQuery, values...); err != nil {
+	if _, err = exec.ExecContext(ctx, updateQuery, values...); err != nil {
 		return errors.Wrap(err, "failed to update local table")
 	}
 
@@ -720,7 +759,7 @@ func Jets(mods ...qm.QueryMod) jetQuery {
 
 // FindJet retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindJet(exec boil.Executor, iD int, selectCols ...string) (*Jet, error) {
+func FindJet(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*Jet, error) {
 	jetObj := &Jet{}
 
 	sel := "*"
@@ -733,7 +772,7 @@ func FindJet(exec boil.Executor, iD int, selectCols ...string) (*Jet, error) {
 
 	q := queries.Raw(query, iD)
 
-	err := q.Bind(nil, exec, jetObj)
+	err := q.Bind(ctx, exec, jetObj)
 	if err != nil {
 		if errors.Cause(err) == sql.ErrNoRows {
 			return nil, sql.ErrNoRows
@@ -746,14 +785,14 @@ func FindJet(exec boil.Executor, iD int, selectCols ...string) (*Jet, error) {
 
 // Insert a single record using an executor.
 // See boil.Columns.InsertColumnSet documentation to understand column list inference for inserts.
-func (o *Jet) Insert(exec boil.Executor, columns boil.Columns) error {
+func (o *Jet) Insert(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) error {
 	if o == nil {
 		return errors.New("models: no jets provided for insertion")
 	}
 
 	var err error
 
-	if err := o.doBeforeInsertHooks(exec); err != nil {
+	if err := o.doBeforeInsertHooks(ctx, exec); err != nil {
 		return err
 	}
 
@@ -798,15 +837,16 @@ func (o *Jet) Insert(exec boil.Executor, columns boil.Columns) error {
 	value := reflect.Indirect(reflect.ValueOf(o))
 	vals := queries.ValuesFromMapping(value, cache.valueMapping)
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, cache.query)
-		fmt.Fprintln(boil.DebugWriter, vals)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, cache.query)
+		fmt.Fprintln(writer, vals)
 	}
 
 	if len(cache.retMapping) != 0 {
-		err = exec.QueryRow(cache.query, vals...).Scan(queries.PtrsFromMapping(value, cache.retMapping)...)
+		err = exec.QueryRowContext(ctx, cache.query, vals...).Scan(queries.PtrsFromMapping(value, cache.retMapping)...)
 	} else {
-		_, err = exec.Exec(cache.query, vals...)
+		_, err = exec.ExecContext(ctx, cache.query, vals...)
 	}
 
 	if err != nil {
@@ -819,15 +859,15 @@ func (o *Jet) Insert(exec boil.Executor, columns boil.Columns) error {
 		jetInsertCacheMut.Unlock()
 	}
 
-	return o.doAfterInsertHooks(exec)
+	return o.doAfterInsertHooks(ctx, exec)
 }
 
 // Update uses an executor to update the Jet.
 // See boil.Columns.UpdateColumnSet documentation to understand column list inference for updates.
 // Update does not automatically update the record in case of default values. Use .Reload() to refresh the records.
-func (o *Jet) Update(exec boil.Executor, columns boil.Columns) (int64, error) {
+func (o *Jet) Update(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) (int64, error) {
 	var err error
-	if err = o.doBeforeUpdateHooks(exec); err != nil {
+	if err = o.doBeforeUpdateHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 	key := makeCacheKey(columns, nil)
@@ -860,12 +900,13 @@ func (o *Jet) Update(exec boil.Executor, columns boil.Columns) (int64, error) {
 
 	values := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), cache.valueMapping)
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, cache.query)
-		fmt.Fprintln(boil.DebugWriter, values)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, cache.query)
+		fmt.Fprintln(writer, values)
 	}
 	var result sql.Result
-	result, err = exec.Exec(cache.query, values...)
+	result, err = exec.ExecContext(ctx, cache.query, values...)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to update jets row")
 	}
@@ -881,14 +922,14 @@ func (o *Jet) Update(exec boil.Executor, columns boil.Columns) (int64, error) {
 		jetUpdateCacheMut.Unlock()
 	}
 
-	return rowsAff, o.doAfterUpdateHooks(exec)
+	return rowsAff, o.doAfterUpdateHooks(ctx, exec)
 }
 
 // UpdateAll updates all rows with the specified column values.
-func (q jetQuery) UpdateAll(exec boil.Executor, cols M) (int64, error) {
+func (q jetQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	queries.SetUpdate(q.Query, cols)
 
-	result, err := q.Query.Exec(exec)
+	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to update all for jets")
 	}
@@ -902,7 +943,7 @@ func (q jetQuery) UpdateAll(exec boil.Executor, cols M) (int64, error) {
 }
 
 // UpdateAll updates all rows with the specified column values, using an executor.
-func (o JetSlice) UpdateAll(exec boil.Executor, cols M) (int64, error) {
+func (o JetSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	ln := int64(len(o))
 	if ln == 0 {
 		return 0, nil
@@ -932,11 +973,12 @@ func (o JetSlice) UpdateAll(exec boil.Executor, cols M) (int64, error) {
 		strmangle.SetParamNames("\"", "\"", 1, colNames),
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), len(colNames)+1, jetPrimaryKeyColumns, len(o)))
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, sql)
-		fmt.Fprintln(boil.DebugWriter, args...)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, sql)
+		fmt.Fprintln(writer, args...)
 	}
-	result, err := exec.Exec(sql, args...)
+	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to update all in jet slice")
 	}
@@ -950,12 +992,12 @@ func (o JetSlice) UpdateAll(exec boil.Executor, cols M) (int64, error) {
 
 // Upsert attempts an insert using an executor, and does an update or ignore on conflict.
 // See boil.Columns documentation for how to properly use updateColumns and insertColumns.
-func (o *Jet) Upsert(exec boil.Executor, updateOnConflict bool, conflictColumns []string, updateColumns, insertColumns boil.Columns) error {
+func (o *Jet) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnConflict bool, conflictColumns []string, updateColumns, insertColumns boil.Columns) error {
 	if o == nil {
 		return errors.New("models: no jets provided for upsert")
 	}
 
-	if err := o.doBeforeUpsertHooks(exec); err != nil {
+	if err := o.doBeforeUpsertHooks(ctx, exec); err != nil {
 		return err
 	}
 
@@ -1037,17 +1079,18 @@ func (o *Jet) Upsert(exec boil.Executor, updateOnConflict bool, conflictColumns 
 		returns = queries.PtrsFromMapping(value, cache.retMapping)
 	}
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, cache.query)
-		fmt.Fprintln(boil.DebugWriter, vals)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, cache.query)
+		fmt.Fprintln(writer, vals)
 	}
 	if len(cache.retMapping) != 0 {
-		err = exec.QueryRow(cache.query, vals...).Scan(returns...)
+		err = exec.QueryRowContext(ctx, cache.query, vals...).Scan(returns...)
 		if err == sql.ErrNoRows {
 			err = nil // Postgres doesn't return anything when there's no update
 		}
 	} else {
-		_, err = exec.Exec(cache.query, vals...)
+		_, err = exec.ExecContext(ctx, cache.query, vals...)
 	}
 	if err != nil {
 		return errors.Wrap(err, "models: unable to upsert jets")
@@ -1059,28 +1102,29 @@ func (o *Jet) Upsert(exec boil.Executor, updateOnConflict bool, conflictColumns 
 		jetUpsertCacheMut.Unlock()
 	}
 
-	return o.doAfterUpsertHooks(exec)
+	return o.doAfterUpsertHooks(ctx, exec)
 }
 
 // Delete deletes a single Jet record with an executor.
 // Delete will match against the primary key column to find the record to delete.
-func (o *Jet) Delete(exec boil.Executor) (int64, error) {
+func (o *Jet) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if o == nil {
 		return 0, errors.New("models: no Jet provided for delete")
 	}
 
-	if err := o.doBeforeDeleteHooks(exec); err != nil {
+	if err := o.doBeforeDeleteHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 
 	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), jetPrimaryKeyMapping)
 	sql := "DELETE FROM \"jets\" WHERE \"id\"=$1"
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, sql)
-		fmt.Fprintln(boil.DebugWriter, args...)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, sql)
+		fmt.Fprintln(writer, args...)
 	}
-	result, err := exec.Exec(sql, args...)
+	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to delete from jets")
 	}
@@ -1090,7 +1134,7 @@ func (o *Jet) Delete(exec boil.Executor) (int64, error) {
 		return 0, errors.Wrap(err, "models: failed to get rows affected by delete for jets")
 	}
 
-	if err := o.doAfterDeleteHooks(exec); err != nil {
+	if err := o.doAfterDeleteHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 
@@ -1098,14 +1142,14 @@ func (o *Jet) Delete(exec boil.Executor) (int64, error) {
 }
 
 // DeleteAll deletes all matching rows.
-func (q jetQuery) DeleteAll(exec boil.Executor) (int64, error) {
+func (q jetQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if q.Query == nil {
 		return 0, errors.New("models: no jetQuery provided for delete all")
 	}
 
 	queries.SetDelete(q.Query)
 
-	result, err := q.Query.Exec(exec)
+	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to delete all from jets")
 	}
@@ -1119,14 +1163,14 @@ func (q jetQuery) DeleteAll(exec boil.Executor) (int64, error) {
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.
-func (o JetSlice) DeleteAll(exec boil.Executor) (int64, error) {
+func (o JetSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if len(o) == 0 {
 		return 0, nil
 	}
 
 	if len(jetBeforeDeleteHooks) != 0 {
 		for _, obj := range o {
-			if err := obj.doBeforeDeleteHooks(exec); err != nil {
+			if err := obj.doBeforeDeleteHooks(ctx, exec); err != nil {
 				return 0, err
 			}
 		}
@@ -1141,11 +1185,12 @@ func (o JetSlice) DeleteAll(exec boil.Executor) (int64, error) {
 	sql := "DELETE FROM \"jets\" WHERE " +
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, jetPrimaryKeyColumns, len(o))
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, sql)
-		fmt.Fprintln(boil.DebugWriter, args)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, sql)
+		fmt.Fprintln(writer, args)
 	}
-	result, err := exec.Exec(sql, args...)
+	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to delete all from jet slice")
 	}
@@ -1157,7 +1202,7 @@ func (o JetSlice) DeleteAll(exec boil.Executor) (int64, error) {
 
 	if len(jetAfterDeleteHooks) != 0 {
 		for _, obj := range o {
-			if err := obj.doAfterDeleteHooks(exec); err != nil {
+			if err := obj.doAfterDeleteHooks(ctx, exec); err != nil {
 				return 0, err
 			}
 		}
@@ -1168,8 +1213,8 @@ func (o JetSlice) DeleteAll(exec boil.Executor) (int64, error) {
 
 // Reload refetches the object from the database
 // using the primary keys with an executor.
-func (o *Jet) Reload(exec boil.Executor) error {
-	ret, err := FindJet(exec, o.ID)
+func (o *Jet) Reload(ctx context.Context, exec boil.ContextExecutor) error {
+	ret, err := FindJet(ctx, exec, o.ID)
 	if err != nil {
 		return err
 	}
@@ -1180,7 +1225,7 @@ func (o *Jet) Reload(exec boil.Executor) error {
 
 // ReloadAll refetches every row with matching primary key column values
 // and overwrites the original object slice with the newly updated slice.
-func (o *JetSlice) ReloadAll(exec boil.Executor) error {
+func (o *JetSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) error {
 	if o == nil || len(*o) == 0 {
 		return nil
 	}
@@ -1197,7 +1242,7 @@ func (o *JetSlice) ReloadAll(exec boil.Executor) error {
 
 	q := queries.Raw(sql, args...)
 
-	err := q.Bind(nil, exec, &slice)
+	err := q.Bind(ctx, exec, &slice)
 	if err != nil {
 		return errors.Wrap(err, "models: unable to reload all in JetSlice")
 	}
@@ -1208,15 +1253,16 @@ func (o *JetSlice) ReloadAll(exec boil.Executor) error {
 }
 
 // JetExists checks if the Jet row exists.
-func JetExists(exec boil.Executor, iD int) (bool, error) {
+func JetExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"jets\" where \"id\"=$1 limit 1)"
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, sql)
-		fmt.Fprintln(boil.DebugWriter, iD)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, sql)
+		fmt.Fprintln(writer, iD)
 	}
-	row := exec.QueryRow(sql, iD)
+	row := exec.QueryRowContext(ctx, sql, iD)
 
 	err := row.Scan(&exists)
 	if err != nil {

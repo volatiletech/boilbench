@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"testing"
 
@@ -166,7 +167,7 @@ func BenchmarkBoilRawBind(b *testing.B) {
 	b.Run("boil", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			var slice []models.Jet
-			err = queries.Raw("select * from jets").Bind(nil, db, &slice)
+			err = queries.Raw("select * from jets").Bind(context.Background(), db, &slice)
 			if err != nil {
 				b.Fatal(err)
 			}

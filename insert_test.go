@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"testing"
 
@@ -142,8 +143,10 @@ func BenchmarkBoilInsert(b *testing.B) {
 	}
 
 	b.Run("boil", func(b *testing.B) {
+		ctx := context.Background()
+
 		for i := 0; i < b.N; i++ {
-			err := store.Insert(db, boil.Infer())
+			err := store.Insert(ctx, db, boil.Infer())
 			if err != nil {
 				b.Fatal(err)
 			}

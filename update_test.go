@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"database/sql/driver"
 	"testing"
@@ -153,8 +154,9 @@ func BenchmarkBoilUpdate(b *testing.B) {
 	}
 
 	b.Run("boil", func(b *testing.B) {
+		ctx := context.Background()
 		for i := 0; i < b.N; i++ {
-			_, err := store.Update(db, boil.Infer())
+			_, err := store.Update(ctx, db, boil.Infer())
 			if err != nil {
 				b.Fatal(err)
 			}

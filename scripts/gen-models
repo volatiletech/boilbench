@@ -16,4 +16,4 @@ echo "Waiting for container to be ready"
 while ! curl http://localhost:5432 2>&1 | grep -q '52'; do sleep 1; done
 
 echo "Generating models"
-go run github.com/volatiletech/sqlboiler/v4 ./scripts/sqlboiler-psql --wipe --no-context --no-tests
+go run github.com/volatiletech/sqlboiler/v4 ./scripts/sqlboiler-psql --wipe --no-tests

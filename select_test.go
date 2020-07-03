@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"database/sql/driver"
 	"testing"
@@ -127,8 +128,9 @@ func BenchmarkBoilSelectAll(b *testing.B) {
 	}
 
 	b.Run("boil", func(b *testing.B) {
+		ctx := context.Background()
 		for i := 0; i < b.N; i++ {
-			_, err = models.Jets().All(db)
+			_, err = models.Jets().All(ctx, db)
 			if err != nil {
 				b.Fatal(err)
 			}
@@ -254,8 +256,9 @@ func BenchmarkBoilSelectSubset(b *testing.B) {
 	}
 
 	b.Run("boil", func(b *testing.B) {
+		ctx := context.Background()
 		for i := 0; i < b.N; i++ {
-			_, err = models.Jets(qm.Select("id, name, color, uuid, identifier, cargo, manifest")).All(db)
+			_, err = models.Jets(qm.Select("id, name, color, uuid, identifier, cargo, manifest")).All(ctx, db)
 			if err != nil {
 				b.Fatal(err)
 			}
@@ -407,6 +410,7 @@ func BenchmarkBoilSelectComplex(b *testing.B) {
 	}
 
 	b.Run("boil", func(b *testing.B) {
+		ctx := context.Background()
 		for i := 0; i < b.N; i++ {
 			_, err = models.Jets(
 				qm.Select("id, name, color, uuid, identifier, cargo, manifest"),
@@ -415,7 +419,7 @@ func BenchmarkBoilSelectComplex(b *testing.B) {
 				qm.Limit(1),
 				qm.GroupBy("id"),
 				qm.Offset(1),
-			).All(db)
+			).All(ctx, db)
 			if err != nil {
 				b.Fatal(err)
 			}

@@ -4,6 +4,7 @@
 package models
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"reflect"
@@ -80,7 +81,7 @@ type (
 	// This should generally be used opposed to []License.
 	LicenseSlice []*License
 	// LicenseHook is the signature for custom License hook methods
-	LicenseHook func(boil.Executor, *License) error
+	LicenseHook func(context.Context, boil.ContextExecutor, *License) error
 
 	licenseQuery struct {
 		*queries.Query
@@ -120,9 +121,13 @@ var licenseAfterDeleteHooks []LicenseHook
 var licenseAfterUpsertHooks []LicenseHook
 
 // doBeforeInsertHooks executes all "before insert" hooks.
-func (o *License) doBeforeInsertHooks(exec boil.Executor) (err error) {
+func (o *License) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range licenseBeforeInsertHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -131,9 +136,13 @@ func (o *License) doBeforeInsertHooks(exec boil.Executor) (err error) {
 }
 
 // doBeforeUpdateHooks executes all "before Update" hooks.
-func (o *License) doBeforeUpdateHooks(exec boil.Executor) (err error) {
+func (o *License) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range licenseBeforeUpdateHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -142,9 +151,13 @@ func (o *License) doBeforeUpdateHooks(exec boil.Executor) (err error) {
 }
 
 // doBeforeDeleteHooks executes all "before Delete" hooks.
-func (o *License) doBeforeDeleteHooks(exec boil.Executor) (err error) {
+func (o *License) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range licenseBeforeDeleteHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -153,9 +166,13 @@ func (o *License) doBeforeDeleteHooks(exec boil.Executor) (err error) {
 }
 
 // doBeforeUpsertHooks executes all "before Upsert" hooks.
-func (o *License) doBeforeUpsertHooks(exec boil.Executor) (err error) {
+func (o *License) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range licenseBeforeUpsertHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -164,9 +181,13 @@ func (o *License) doBeforeUpsertHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterInsertHooks executes all "after Insert" hooks.
-func (o *License) doAfterInsertHooks(exec boil.Executor) (err error) {
+func (o *License) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range licenseAfterInsertHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -175,9 +196,13 @@ func (o *License) doAfterInsertHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterSelectHooks executes all "after Select" hooks.
-func (o *License) doAfterSelectHooks(exec boil.Executor) (err error) {
+func (o *License) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range licenseAfterSelectHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -186,9 +211,13 @@ func (o *License) doAfterSelectHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterUpdateHooks executes all "after Update" hooks.
-func (o *License) doAfterUpdateHooks(exec boil.Executor) (err error) {
+func (o *License) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range licenseAfterUpdateHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -197,9 +226,13 @@ func (o *License) doAfterUpdateHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterDeleteHooks executes all "after Delete" hooks.
-func (o *License) doAfterDeleteHooks(exec boil.Executor) (err error) {
+func (o *License) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range licenseAfterDeleteHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -208,9 +241,13 @@ func (o *License) doAfterDeleteHooks(exec boil.Executor) (err error) {
 }
 
 // doAfterUpsertHooks executes all "after Upsert" hooks.
-func (o *License) doAfterUpsertHooks(exec boil.Executor) (err error) {
+func (o *License) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+	if boil.HooksAreSkipped(ctx) {
+		return nil
+	}
+
 	for _, hook := range licenseAfterUpsertHooks {
-		if err := hook(exec, o); err != nil {
+		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
 	}
@@ -243,12 +280,12 @@ func AddLicenseHook(hookPoint boil.HookPoint, licenseHook LicenseHook) {
 }
 
 // One returns a single license record from the query.
-func (q licenseQuery) One(exec boil.Executor) (*License, error) {
+func (q licenseQuery) One(ctx context.Context, exec boil.ContextExecutor) (*License, error) {
 	o := &License{}
 
 	queries.SetLimit(q.Query, 1)
 
-	err := q.Bind(nil, exec, o)
+	err := q.Bind(ctx, exec, o)
 	if err != nil {
 		if errors.Cause(err) == sql.ErrNoRows {
 			return nil, sql.ErrNoRows
@@ -256,7 +293,7 @@ func (q licenseQuery) One(exec boil.Executor) (*License, error) {
 		return nil, errors.Wrap(err, "models: failed to execute a one query for licenses")
 	}
 
-	if err := o.doAfterSelectHooks(exec); err != nil {
+	if err := o.doAfterSelectHooks(ctx, exec); err != nil {
 		return o, err
 	}
 
@@ -264,17 +301,17 @@ func (q licenseQuery) One(exec boil.Executor) (*License, error) {
 }
 
 // All returns all License records from the query.
-func (q licenseQuery) All(exec boil.Executor) (LicenseSlice, error) {
+func (q licenseQuery) All(ctx context.Context, exec boil.ContextExecutor) (LicenseSlice, error) {
 	var o []*License
 
-	err := q.Bind(nil, exec, &o)
+	err := q.Bind(ctx, exec, &o)
 	if err != nil {
 		return nil, errors.Wrap(err, "models: failed to assign all query results to License slice")
 	}
 
 	if len(licenseAfterSelectHooks) != 0 {
 		for _, obj := range o {
-			if err := obj.doAfterSelectHooks(exec); err != nil {
+			if err := obj.doAfterSelectHooks(ctx, exec); err != nil {
 				return o, err
 			}
 		}
@@ -284,13 +321,13 @@ func (q licenseQuery) All(exec boil.Executor) (LicenseSlice, error) {
 }
 
 // Count returns the count of all License records in the query.
-func (q licenseQuery) Count(exec boil.Executor) (int64, error) {
+func (q licenseQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
 	queries.SetCount(q.Query)
 
-	err := q.Query.QueryRow(exec).Scan(&count)
+	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: failed to count licenses rows")
 	}
@@ -299,14 +336,14 @@ func (q licenseQuery) Count(exec boil.Executor) (int64, error) {
 }
 
 // Exists checks if the row exists in the table.
-func (q licenseQuery) Exists(exec boil.Executor) (bool, error) {
+func (q licenseQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
 	queries.SetCount(q.Query)
 	queries.SetLimit(q.Query, 1)
 
-	err := q.Query.QueryRow(exec).Scan(&count)
+	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
 		return false, errors.Wrap(err, "models: failed to check if licenses exists")
 	}
@@ -330,7 +367,7 @@ func (o *License) Pilot(mods ...qm.QueryMod) pilotQuery {
 
 // LoadPilot allows an eager lookup of values, cached into the
 // loaded structs of the objects. This is for an N-1 relationship.
-func (licenseL) LoadPilot(e boil.Executor, singular bool, maybeLicense interface{}, mods queries.Applicator) error {
+func (licenseL) LoadPilot(ctx context.Context, e boil.ContextExecutor, singular bool, maybeLicense interface{}, mods queries.Applicator) error {
 	var slice []*License
 	var object *License
 
@@ -381,7 +418,7 @@ func (licenseL) LoadPilot(e boil.Executor, singular bool, maybeLicense interface
 		mods.Apply(query)
 	}
 
-	results, err := query.Query(e)
+	results, err := query.QueryContext(ctx, e)
 	if err != nil {
 		return errors.Wrap(err, "failed to eager load Pilot")
 	}
@@ -400,7 +437,7 @@ func (licenseL) LoadPilot(e boil.Executor, singular bool, maybeLicense interface
 
 	if len(licenseAfterSelectHooks) != 0 {
 		for _, obj := range resultSlice {
-			if err := obj.doAfterSelectHooks(e); err != nil {
+			if err := obj.doAfterSelectHooks(ctx, e); err != nil {
 				return err
 			}
 		}
@@ -439,10 +476,10 @@ func (licenseL) LoadPilot(e boil.Executor, singular bool, maybeLicense interface
 // SetPilot of the license to the related item.
 // Sets o.R.Pilot to related.
 // Adds o to related.R.Licenses.
-func (o *License) SetPilot(exec boil.Executor, insert bool, related *Pilot) error {
+func (o *License) SetPilot(ctx context.Context, exec boil.ContextExecutor, insert bool, related *Pilot) error {
 	var err error
 	if insert {
-		if err = related.Insert(exec, boil.Infer()); err != nil {
+		if err = related.Insert(ctx, exec, boil.Infer()); err != nil {
 			return errors.Wrap(err, "failed to insert into foreign table")
 		}
 	}
@@ -454,11 +491,12 @@ func (o *License) SetPilot(exec boil.Executor, insert bool, related *Pilot) erro
 	)
 	values := []interface{}{related.ID, o.ID}
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, updateQuery)
-		fmt.Fprintln(boil.DebugWriter, values)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, updateQuery)
+		fmt.Fprintln(writer, values)
 	}
-	if _, err = exec.Exec(updateQuery, values...); err != nil {
+	if _, err = exec.ExecContext(ctx, updateQuery, values...); err != nil {
 		return errors.Wrap(err, "failed to update local table")
 	}
 
@@ -485,11 +523,11 @@ func (o *License) SetPilot(exec boil.Executor, insert bool, related *Pilot) erro
 // RemovePilot relationship.
 // Sets o.R.Pilot to nil.
 // Removes o from all passed in related items' relationships struct (Optional).
-func (o *License) RemovePilot(exec boil.Executor, related *Pilot) error {
+func (o *License) RemovePilot(ctx context.Context, exec boil.ContextExecutor, related *Pilot) error {
 	var err error
 
 	queries.SetScanner(&o.PilotID, nil)
-	if _, err = o.Update(exec, boil.Whitelist("pilot_id")); err != nil {
+	if _, err = o.Update(ctx, exec, boil.Whitelist("pilot_id")); err != nil {
 		return errors.Wrap(err, "failed to update local table")
 	}
 
@@ -523,7 +561,7 @@ func Licenses(mods ...qm.QueryMod) licenseQuery {
 
 // FindLicense retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindLicense(exec boil.Executor, iD int, selectCols ...string) (*License, error) {
+func FindLicense(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*License, error) {
 	licenseObj := &License{}
 
 	sel := "*"
@@ -536,7 +574,7 @@ func FindLicense(exec boil.Executor, iD int, selectCols ...string) (*License, er
 
 	q := queries.Raw(query, iD)
 
-	err := q.Bind(nil, exec, licenseObj)
+	err := q.Bind(ctx, exec, licenseObj)
 	if err != nil {
 		if errors.Cause(err) == sql.ErrNoRows {
 			return nil, sql.ErrNoRows
@@ -549,14 +587,14 @@ func FindLicense(exec boil.Executor, iD int, selectCols ...string) (*License, er
 
 // Insert a single record using an executor.
 // See boil.Columns.InsertColumnSet documentation to understand column list inference for inserts.
-func (o *License) Insert(exec boil.Executor, columns boil.Columns) error {
+func (o *License) Insert(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) error {
 	if o == nil {
 		return errors.New("models: no licenses provided for insertion")
 	}
 
 	var err error
 
-	if err := o.doBeforeInsertHooks(exec); err != nil {
+	if err := o.doBeforeInsertHooks(ctx, exec); err != nil {
 		return err
 	}
 
@@ -601,15 +639,16 @@ func (o *License) Insert(exec boil.Executor, columns boil.Columns) error {
 	value := reflect.Indirect(reflect.ValueOf(o))
 	vals := queries.ValuesFromMapping(value, cache.valueMapping)
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, cache.query)
-		fmt.Fprintln(boil.DebugWriter, vals)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, cache.query)
+		fmt.Fprintln(writer, vals)
 	}
 
 	if len(cache.retMapping) != 0 {
-		err = exec.QueryRow(cache.query, vals...).Scan(queries.PtrsFromMapping(value, cache.retMapping)...)
+		err = exec.QueryRowContext(ctx, cache.query, vals...).Scan(queries.PtrsFromMapping(value, cache.retMapping)...)
 	} else {
-		_, err = exec.Exec(cache.query, vals...)
+		_, err = exec.ExecContext(ctx, cache.query, vals...)
 	}
 
 	if err != nil {
@@ -622,15 +661,15 @@ func (o *License) Insert(exec boil.Executor, columns boil.Columns) error {
 		licenseInsertCacheMut.Unlock()
 	}
 
-	return o.doAfterInsertHooks(exec)
+	return o.doAfterInsertHooks(ctx, exec)
 }
 
 // Update uses an executor to update the License.
 // See boil.Columns.UpdateColumnSet documentation to understand column list inference for updates.
 // Update does not automatically update the record in case of default values. Use .Reload() to refresh the records.
-func (o *License) Update(exec boil.Executor, columns boil.Columns) (int64, error) {
+func (o *License) Update(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) (int64, error) {
 	var err error
-	if err = o.doBeforeUpdateHooks(exec); err != nil {
+	if err = o.doBeforeUpdateHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 	key := makeCacheKey(columns, nil)
@@ -663,12 +702,13 @@ func (o *License) Update(exec boil.Executor, columns boil.Columns) (int64, error
 
 	values := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), cache.valueMapping)
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, cache.query)
-		fmt.Fprintln(boil.DebugWriter, values)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, cache.query)
+		fmt.Fprintln(writer, values)
 	}
 	var result sql.Result
-	result, err = exec.Exec(cache.query, values...)
+	result, err = exec.ExecContext(ctx, cache.query, values...)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to update licenses row")
 	}
@@ -684,14 +724,14 @@ func (o *License) Update(exec boil.Executor, columns boil.Columns) (int64, error
 		licenseUpdateCacheMut.Unlock()
 	}
 
-	return rowsAff, o.doAfterUpdateHooks(exec)
+	return rowsAff, o.doAfterUpdateHooks(ctx, exec)
 }
 
 // UpdateAll updates all rows with the specified column values.
-func (q licenseQuery) UpdateAll(exec boil.Executor, cols M) (int64, error) {
+func (q licenseQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	queries.SetUpdate(q.Query, cols)
 
-	result, err := q.Query.Exec(exec)
+	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to update all for licenses")
 	}
@@ -705,7 +745,7 @@ func (q licenseQuery) UpdateAll(exec boil.Executor, cols M) (int64, error) {
 }
 
 // UpdateAll updates all rows with the specified column values, using an executor.
-func (o LicenseSlice) UpdateAll(exec boil.Executor, cols M) (int64, error) {
+func (o LicenseSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	ln := int64(len(o))
 	if ln == 0 {
 		return 0, nil
@@ -735,11 +775,12 @@ func (o LicenseSlice) UpdateAll(exec boil.Executor, cols M) (int64, error) {
 		strmangle.SetParamNames("\"", "\"", 1, colNames),
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), len(colNames)+1, licensePrimaryKeyColumns, len(o)))
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, sql)
-		fmt.Fprintln(boil.DebugWriter, args...)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, sql)
+		fmt.Fprintln(writer, args...)
 	}
-	result, err := exec.Exec(sql, args...)
+	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to update all in license slice")
 	}
@@ -753,12 +794,12 @@ func (o LicenseSlice) UpdateAll(exec boil.Executor, cols M) (int64, error) {
 
 // Upsert attempts an insert using an executor, and does an update or ignore on conflict.
 // See boil.Columns documentation for how to properly use updateColumns and insertColumns.
-func (o *License) Upsert(exec boil.Executor, updateOnConflict bool, conflictColumns []string, updateColumns, insertColumns boil.Columns) error {
+func (o *License) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnConflict bool, conflictColumns []string, updateColumns, insertColumns boil.Columns) error {
 	if o == nil {
 		return errors.New("models: no licenses provided for upsert")
 	}
 
-	if err := o.doBeforeUpsertHooks(exec); err != nil {
+	if err := o.doBeforeUpsertHooks(ctx, exec); err != nil {
 		return err
 	}
 
@@ -840,17 +881,18 @@ func (o *License) Upsert(exec boil.Executor, updateOnConflict bool, conflictColu
 		returns = queries.PtrsFromMapping(value, cache.retMapping)
 	}
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, cache.query)
-		fmt.Fprintln(boil.DebugWriter, vals)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, cache.query)
+		fmt.Fprintln(writer, vals)
 	}
 	if len(cache.retMapping) != 0 {
-		err = exec.QueryRow(cache.query, vals...).Scan(returns...)
+		err = exec.QueryRowContext(ctx, cache.query, vals...).Scan(returns...)
 		if err == sql.ErrNoRows {
 			err = nil // Postgres doesn't return anything when there's no update
 		}
 	} else {
-		_, err = exec.Exec(cache.query, vals...)
+		_, err = exec.ExecContext(ctx, cache.query, vals...)
 	}
 	if err != nil {
 		return errors.Wrap(err, "models: unable to upsert licenses")
@@ -862,28 +904,29 @@ func (o *License) Upsert(exec boil.Executor, updateOnConflict bool, conflictColu
 		licenseUpsertCacheMut.Unlock()
 	}
 
-	return o.doAfterUpsertHooks(exec)
+	return o.doAfterUpsertHooks(ctx, exec)
 }
 
 // Delete deletes a single License record with an executor.
 // Delete will match against the primary key column to find the record to delete.
-func (o *License) Delete(exec boil.Executor) (int64, error) {
+func (o *License) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if o == nil {
 		return 0, errors.New("models: no License provided for delete")
 	}
 
-	if err := o.doBeforeDeleteHooks(exec); err != nil {
+	if err := o.doBeforeDeleteHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 
 	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), licensePrimaryKeyMapping)
 	sql := "DELETE FROM \"licenses\" WHERE \"id\"=$1"
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, sql)
-		fmt.Fprintln(boil.DebugWriter, args...)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, sql)
+		fmt.Fprintln(writer, args...)
 	}
-	result, err := exec.Exec(sql, args...)
+	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to delete from licenses")
 	}
@@ -893,7 +936,7 @@ func (o *License) Delete(exec boil.Executor) (int64, error) {
 		return 0, errors.Wrap(err, "models: failed to get rows affected by delete for licenses")
 	}
 
-	if err := o.doAfterDeleteHooks(exec); err != nil {
+	if err := o.doAfterDeleteHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 
@@ -901,14 +944,14 @@ func (o *License) Delete(exec boil.Executor) (int64, error) {
 }
 
 // DeleteAll deletes all matching rows.
-func (q licenseQuery) DeleteAll(exec boil.Executor) (int64, error) {
+func (q licenseQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if q.Query == nil {
 		return 0, errors.New("models: no licenseQuery provided for delete all")
 	}
 
 	queries.SetDelete(q.Query)
 
-	result, err := q.Query.Exec(exec)
+	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to delete all from licenses")
 	}
@@ -922,14 +965,14 @@ func (q licenseQuery) DeleteAll(exec boil.Executor) (int64, error) {
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.
-func (o LicenseSlice) DeleteAll(exec boil.Executor) (int64, error) {
+func (o LicenseSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if len(o) == 0 {
 		return 0, nil
 	}
 
 	if len(licenseBeforeDeleteHooks) != 0 {
 		for _, obj := range o {
-			if err := obj.doBeforeDeleteHooks(exec); err != nil {
+			if err := obj.doBeforeDeleteHooks(ctx, exec); err != nil {
 				return 0, err
 			}
 		}
@@ -944,11 +987,12 @@ func (o LicenseSlice) DeleteAll(exec boil.Executor) (int64, error) {
 	sql := "DELETE FROM \"licenses\" WHERE " +
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, licensePrimaryKeyColumns, len(o))
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, sql)
-		fmt.Fprintln(boil.DebugWriter, args)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, sql)
+		fmt.Fprintln(writer, args)
 	}
-	result, err := exec.Exec(sql, args...)
+	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
 		return 0, errors.Wrap(err, "models: unable to delete all from license slice")
 	}
@@ -960,7 +1004,7 @@ func (o LicenseSlice) DeleteAll(exec boil.Executor) (int64, error) {
 
 	if len(licenseAfterDeleteHooks) != 0 {
 		for _, obj := range o {
-			if err := obj.doAfterDeleteHooks(exec); err != nil {
+			if err := obj.doAfterDeleteHooks(ctx, exec); err != nil {
 				return 0, err
 			}
 		}
@@ -971,8 +1015,8 @@ func (o LicenseSlice) DeleteAll(exec boil.Executor) (int64, error) {
 
 // Reload refetches the object from the database
 // using the primary keys with an executor.
-func (o *License) Reload(exec boil.Executor) error {
-	ret, err := FindLicense(exec, o.ID)
+func (o *License) Reload(ctx context.Context, exec boil.ContextExecutor) error {
+	ret, err := FindLicense(ctx, exec, o.ID)
 	if err != nil {
 		return err
 	}
@@ -983,7 +1027,7 @@ func (o *License) Reload(exec boil.Executor) error {
 
 // ReloadAll refetches every row with matching primary key column values
 // and overwrites the original object slice with the newly updated slice.
-func (o *LicenseSlice) ReloadAll(exec boil.Executor) error {
+func (o *LicenseSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) error {
 	if o == nil || len(*o) == 0 {
 		return nil
 	}
@@ -1000,7 +1044,7 @@ func (o *LicenseSlice) ReloadAll(exec boil.Executor) error {
 
 	q := queries.Raw(sql, args...)
 
-	err := q.Bind(nil, exec, &slice)
+	err := q.Bind(ctx, exec, &slice)
 	if err != nil {
 		return errors.Wrap(err, "models: unable to reload all in LicenseSlice")
 	}
@@ -1011,15 +1055,16 @@ func (o *LicenseSlice) ReloadAll(exec boil.Executor) error {
 }
 
 // LicenseExists checks if the License row exists.
-func LicenseExists(exec boil.Executor, iD int) (bool, error) {
+func LicenseExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"licenses\" where \"id\"=$1 limit 1)"
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, sql)
-		fmt.Fprintln(boil.DebugWriter, iD)
+	if boil.IsDebug(ctx) {
+		writer := boil.DebugWriterFrom(ctx)
+		fmt.Fprintln(writer, sql)
+		fmt.Fprintln(writer, iD)
 	}
-	row := exec.QueryRow(sql, iD)
+	row := exec.QueryRowContext(ctx, sql, iD)
 
 	err := row.Scan(&exists)
 	if err != nil {
