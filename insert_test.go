@@ -5,8 +5,6 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/volatiletech/sqlboiler/v4/boil"
-
 	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
@@ -14,6 +12,7 @@ import (
 	"github.com/volatiletech/boilbench/mimic"
 	"github.com/volatiletech/boilbench/models"
 	"github.com/volatiletech/boilbench/xorms"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 	"gopkg.in/gorp.v1"
 	"gopkg.in/src-d/go-kallax.v1"
 	"xorm.io/xorm"
@@ -24,7 +23,7 @@ func BenchmarkGORMInsert(b *testing.B) {
 		ID: 1,
 	}
 
-	exec := jetExec()
+	exec := jetQueryInsert()
 	exec.NumInput = -1
 	mimic.NewResult(exec)
 

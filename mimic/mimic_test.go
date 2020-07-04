@@ -11,13 +11,13 @@ func TestIt(t *testing.T) {
 		Query: &Query{
 			Cols: []string{"id"},
 			Vals: [][]driver.Value{
-				[]driver.Value{
+				{
 					int64(56),
 				},
-				[]driver.Value{
+				{
 					int64(76),
 				},
-				[]driver.Value{
+				{
 					int64(333),
 				},
 			},

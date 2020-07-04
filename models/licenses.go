@@ -24,11 +24,11 @@ import (
 
 // License is an object representing the database table.
 type License struct {
-	ID      int      `boil:"id" json:"id" toml:"id" yaml:"id"`
-	PilotID null.Int `boil:"pilot_id" json:"pilot_id,omitempty" toml:"pilot_id" yaml:"pilot_id,omitempty"`
+	ID      int      `db:"id" boil:"id" json:"id" toml:"id" yaml:"id"`
+	PilotID null.Int `db:"pilot_id" boil:"pilot_id" json:"pilot_id,omitempty" toml:"pilot_id" yaml:"pilot_id,omitempty"`
 
-	R *licenseR `boil:"-" json:"-" toml:"-" yaml:"-"`
-	L licenseL  `boil:"-" json:"-" toml:"-" yaml:"-"`
+	R *licenseR `db:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
+	L licenseL  `db:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var LicenseColumns = struct {
@@ -58,7 +58,7 @@ var LicenseRels = struct {
 
 // licenseR is where relationships are stored.
 type licenseR struct {
-	Pilot *Pilot `boil:"Pilot" json:"Pilot" toml:"Pilot" yaml:"Pilot"`
+	Pilot *Pilot `db:"Pilot" boil:"Pilot" json:"Pilot" toml:"Pilot" yaml:"Pilot"`
 }
 
 // NewStruct creates a new relationship struct

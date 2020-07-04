@@ -23,11 +23,11 @@ import (
 
 // Language is an object representing the database table.
 type Language struct {
-	ID       int    `boil:"id" json:"id" toml:"id" yaml:"id"`
-	Language string `boil:"language" json:"language" toml:"language" yaml:"language"`
+	ID       int    `db:"id" boil:"id" json:"id" toml:"id" yaml:"id"`
+	Language string `db:"language" boil:"language" json:"language" toml:"language" yaml:"language"`
 
-	R *languageR `boil:"-" json:"-" toml:"-" yaml:"-"`
-	L languageL  `boil:"-" json:"-" toml:"-" yaml:"-"`
+	R *languageR `db:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
+	L languageL  `db:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var LanguageColumns = struct {
@@ -57,7 +57,7 @@ var LanguageRels = struct {
 
 // languageR is where relationships are stored.
 type languageR struct {
-	Pilots PilotSlice `boil:"Pilots" json:"Pilots" toml:"Pilots" yaml:"Pilots"`
+	Pilots PilotSlice `db:"Pilots" boil:"Pilots" json:"Pilots" toml:"Pilots" yaml:"Pilots"`
 }
 
 // NewStruct creates a new relationship struct

@@ -24,18 +24,18 @@ import (
 
 // Jet is an object representing the database table.
 type Jet struct {
-	ID         int         `boil:"id" json:"id" toml:"id" yaml:"id"`
-	PilotID    int         `boil:"pilot_id" json:"pilot_id" toml:"pilot_id" yaml:"pilot_id"`
-	AirportID  int         `boil:"airport_id" json:"airport_id" toml:"airport_id" yaml:"airport_id"`
-	Name       string      `boil:"name" json:"name" toml:"name" yaml:"name"`
-	Color      null.String `boil:"color" json:"color,omitempty" toml:"color" yaml:"color,omitempty"`
-	UUID       string      `boil:"uuid" json:"uuid" toml:"uuid" yaml:"uuid"`
-	Identifier string      `boil:"identifier" json:"identifier" toml:"identifier" yaml:"identifier"`
-	Cargo      []byte      `boil:"cargo" json:"cargo" toml:"cargo" yaml:"cargo"`
-	Manifest   []byte      `boil:"manifest" json:"manifest" toml:"manifest" yaml:"manifest"`
+	ID         int         `db:"id" boil:"id" json:"id" toml:"id" yaml:"id"`
+	PilotID    int         `db:"pilot_id" boil:"pilot_id" json:"pilot_id" toml:"pilot_id" yaml:"pilot_id"`
+	AirportID  int         `db:"airport_id" boil:"airport_id" json:"airport_id" toml:"airport_id" yaml:"airport_id"`
+	Name       string      `db:"name" boil:"name" json:"name" toml:"name" yaml:"name"`
+	Color      null.String `db:"color" boil:"color" json:"color,omitempty" toml:"color" yaml:"color,omitempty"`
+	UUID       string      `db:"uuid" boil:"uuid" json:"uuid" toml:"uuid" yaml:"uuid"`
+	Identifier string      `db:"identifier" boil:"identifier" json:"identifier" toml:"identifier" yaml:"identifier"`
+	Cargo      []byte      `db:"cargo" boil:"cargo" json:"cargo" toml:"cargo" yaml:"cargo"`
+	Manifest   []byte      `db:"manifest" boil:"manifest" json:"manifest" toml:"manifest" yaml:"manifest"`
 
-	R *jetR `boil:"-" json:"-" toml:"-" yaml:"-"`
-	L jetL  `boil:"-" json:"-" toml:"-" yaml:"-"`
+	R *jetR `db:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
+	L jetL  `db:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var JetColumns = struct {
@@ -127,8 +127,8 @@ var JetRels = struct {
 
 // jetR is where relationships are stored.
 type jetR struct {
-	Airport *Airport `boil:"Airport" json:"Airport" toml:"Airport" yaml:"Airport"`
-	Pilot   *Pilot   `boil:"Pilot" json:"Pilot" toml:"Pilot" yaml:"Pilot"`
+	Airport *Airport `db:"Airport" boil:"Airport" json:"Airport" toml:"Airport" yaml:"Airport"`
+	Pilot   *Pilot   `db:"Pilot" boil:"Pilot" json:"Pilot" toml:"Pilot" yaml:"Pilot"`
 }
 
 // NewStruct creates a new relationship struct

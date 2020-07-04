@@ -24,11 +24,11 @@ import (
 
 // Airport is an object representing the database table.
 type Airport struct {
-	ID   int      `boil:"id" json:"id" toml:"id" yaml:"id"`
-	Size null.Int `boil:"size" json:"size,omitempty" toml:"size" yaml:"size,omitempty"`
+	ID   int      `db:"id" boil:"id" json:"id" toml:"id" yaml:"id"`
+	Size null.Int `db:"size" boil:"size" json:"size,omitempty" toml:"size" yaml:"size,omitempty"`
 
-	R *airportR `boil:"-" json:"-" toml:"-" yaml:"-"`
-	L airportL  `boil:"-" json:"-" toml:"-" yaml:"-"`
+	R *airportR `db:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
+	L airportL  `db:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var AirportColumns = struct {
@@ -104,7 +104,7 @@ var AirportRels = struct {
 
 // airportR is where relationships are stored.
 type airportR struct {
-	Jets JetSlice `boil:"Jets" json:"Jets" toml:"Jets" yaml:"Jets"`
+	Jets JetSlice `db:"Jets" boil:"Jets" json:"Jets" toml:"Jets" yaml:"Jets"`
 }
 
 // NewStruct creates a new relationship struct

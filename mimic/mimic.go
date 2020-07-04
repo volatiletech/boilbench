@@ -6,25 +6,18 @@ import (
 	"errors"
 	"io"
 	"strconv"
-	"xorm.io/xorm/dialects"
 
-	"xorm.io/core"
+	"xorm.io/xorm/dialects"
+	"xorm.io/xorm/schemas"
 )
 
 var dsns = map[string]QueryResult{}
 var counter = 0
 
-type XormDriver struct {
-}
+type XormDriver struct{}
 
-func (x *XormDriver) Parse(a string, b string) (*core.Uri, error) {
-	return &core.Uri{DbType: core.POSTGRES}, nil
-}
-
-type XormDialectDriver struct{}
-
-func (x *XormDialectDriver) Parse(string, string) (*dialects.URI, error) {
-	return &dialects.URI{DBType: core.POSTGRES}, nil
+func (x *XormDriver) Parse(string, string) (*dialects.URI, error) {
+	return &dialects.URI{DBType: schemas.POSTGRES}, nil
 }
 
 type QueryResult struct {

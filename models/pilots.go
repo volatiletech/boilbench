@@ -23,11 +23,11 @@ import (
 
 // Pilot is an object representing the database table.
 type Pilot struct {
-	ID   int    `boil:"id" json:"id" toml:"id" yaml:"id"`
-	Name string `boil:"name" json:"name" toml:"name" yaml:"name"`
+	ID   int    `db:"id" boil:"id" json:"id" toml:"id" yaml:"id"`
+	Name string `db:"name" boil:"name" json:"name" toml:"name" yaml:"name"`
 
-	R *pilotR `boil:"-" json:"-" toml:"-" yaml:"-"`
-	L pilotL  `boil:"-" json:"-" toml:"-" yaml:"-"`
+	R *pilotR `db:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
+	L pilotL  `db:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var PilotColumns = struct {
@@ -61,9 +61,9 @@ var PilotRels = struct {
 
 // pilotR is where relationships are stored.
 type pilotR struct {
-	Jets      JetSlice      `boil:"Jets" json:"Jets" toml:"Jets" yaml:"Jets"`
-	Licenses  LicenseSlice  `boil:"Licenses" json:"Licenses" toml:"Licenses" yaml:"Licenses"`
-	Languages LanguageSlice `boil:"Languages" json:"Languages" toml:"Languages" yaml:"Languages"`
+	Jets      JetSlice      `db:"Jets" boil:"Jets" json:"Jets" toml:"Jets" yaml:"Jets"`
+	Licenses  LicenseSlice  `db:"Licenses" boil:"Licenses" json:"Licenses" toml:"Licenses" yaml:"Licenses"`
+	Languages LanguageSlice `db:"Languages" boil:"Languages" json:"Languages" toml:"Languages" yaml:"Languages"`
 }
 
 // NewStruct creates a new relationship struct

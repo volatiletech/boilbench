@@ -23,11 +23,11 @@ import (
 
 // Hangar is an object representing the database table.
 type Hangar struct {
-	ID   int    `boil:"id" json:"id" toml:"id" yaml:"id"`
-	Name string `boil:"name" json:"name" toml:"name" yaml:"name"`
+	ID   int    `db:"id" boil:"id" json:"id" toml:"id" yaml:"id"`
+	Name string `db:"name" boil:"name" json:"name" toml:"name" yaml:"name"`
 
-	R *hangarR `boil:"-" json:"-" toml:"-" yaml:"-"`
-	L hangarL  `boil:"-" json:"-" toml:"-" yaml:"-"`
+	R *hangarR `db:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
+	L hangarL  `db:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var HangarColumns = struct {
