@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"testing"
 
-	"xorm.io/xorm"
 	"github.com/jinzhu/gorm"
 	"github.com/jmoiron/sqlx"
 	"github.com/volatiletech/boilbench/gorms"
@@ -13,8 +12,9 @@ import (
 	"github.com/volatiletech/boilbench/mimic"
 	"github.com/volatiletech/boilbench/models"
 	"github.com/volatiletech/boilbench/xorms"
-	"github.com/volatiletech/sqlboiler/queries"
+	"github.com/volatiletech/sqlboiler/v4/queries"
 	"gopkg.in/gorp.v1"
+	"xorm.io/xorm"
 )
 
 func BenchmarkGORMRawBind(b *testing.B) {

@@ -5,7 +5,7 @@ import (
 	"database/sql/driver"
 	"testing"
 
-	"github.com/volatiletech/sqlboiler/boil"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 
 	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"
