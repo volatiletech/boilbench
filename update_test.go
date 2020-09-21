@@ -5,9 +5,8 @@ import (
 	"database/sql/driver"
 	"testing"
 
-	"github.com/volatiletech/sqlboiler/boil"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 
-	"xorm.io/xorm"
 	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
@@ -16,6 +15,7 @@ import (
 	"github.com/volatiletech/boilbench/models"
 	"github.com/volatiletech/boilbench/xorms"
 	gorp "gopkg.in/gorp.v1"
+	"xorm.io/xorm"
 )
 
 func BenchmarkGORMUpdate(b *testing.B) {
@@ -88,7 +88,7 @@ func BenchmarkXORMUpdate(b *testing.B) {
 
 	b.Run("xorm", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_, err := xormdb.Id(store.Id).Update(&store)
+			_, err := xormdb.ID(store.Id).Update(&store)
 			if err != nil {
 				b.Fatal(err)
 			}

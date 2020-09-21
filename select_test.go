@@ -8,7 +8,6 @@ import (
 	"gopkg.in/gorp.v1"
 	"gopkg.in/src-d/go-kallax.v1"
 
-	"xorm.io/xorm"
 	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
@@ -16,7 +15,8 @@ import (
 	"github.com/volatiletech/boilbench/mimic"
 	"github.com/volatiletech/boilbench/models"
 	"github.com/volatiletech/boilbench/xorms"
-	"github.com/volatiletech/sqlboiler/queries/qm"
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
+	"xorm.io/xorm"
 )
 
 func BenchmarkGORMSelectAll(b *testing.B) {

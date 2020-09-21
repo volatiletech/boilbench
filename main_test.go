@@ -5,8 +5,9 @@ import (
 	"os"
 	"testing"
 
-	"xorm.io/core"
 	"github.com/volatiletech/boilbench/mimic"
+	"xorm.io/core"
+	"xorm.io/xorm/dialects"
 )
 
 func jetQuery() mimic.QueryResult {
@@ -147,6 +148,7 @@ func TestMain(m *testing.M) {
 	if core.QueryDriver("mimic") == nil {
 		panic("failed to register xorm driver")
 	}
+	dialects.RegisterDriver("mimic", &mimic.XormDialectDriver{})
 	code := m.Run()
 	os.Exit(code)
 }

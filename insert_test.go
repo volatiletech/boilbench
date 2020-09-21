@@ -4,9 +4,8 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/volatiletech/sqlboiler/boil"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 
-	"xorm.io/xorm"
 	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
@@ -16,6 +15,7 @@ import (
 	"github.com/volatiletech/boilbench/xorms"
 	"gopkg.in/gorp.v1"
 	"gopkg.in/src-d/go-kallax.v1"
+	"xorm.io/xorm"
 )
 
 func BenchmarkGORMInsert(b *testing.B) {
