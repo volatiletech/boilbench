@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"database/sql/driver"
 	"testing"
@@ -90,7 +91,7 @@ func BenchmarkXORMSelectAll(b *testing.B) {
 func BenchmarkKallaxSelectAll(b *testing.B) {
 	query := jetQuery()
 	query.Vals = [][]driver.Value{
-		[]driver.Value{
+		{
 			int64(1), int64(1), int64(1), "test", nil, "test", "test", []byte("{5}"), []byte("{3}"),
 		},
 	}
@@ -127,8 +128,9 @@ func BenchmarkBoilSelectAll(b *testing.B) {
 	}
 
 	b.Run("boil", func(b *testing.B) {
+		ctx := context.Background()
 		for i := 0; i < b.N; i++ {
-			_, err = models.Jets().All(db)
+			_, err = models.Jets().All(ctx, db)
 			if err != nil {
 				b.Fatal(err)
 			}
@@ -208,7 +210,7 @@ func BenchmarkKallaxSelectSubset(b *testing.B) {
 	query := jetQuery()
 	query.Cols = []string{"id", "name", "color", "uuid", "identifier", "cargo", "manifest"}
 	query.Vals = [][]driver.Value{
-		[]driver.Value{
+		{
 			int64(1), int64(1), int64(1), "test", "str", nil, "{3}",
 		},
 	}
@@ -254,8 +256,9 @@ func BenchmarkBoilSelectSubset(b *testing.B) {
 	}
 
 	b.Run("boil", func(b *testing.B) {
+		ctx := context.Background()
 		for i := 0; i < b.N; i++ {
-			_, err = models.Jets(qm.Select("id, name, color, uuid, identifier, cargo, manifest")).All(db)
+			_, err = models.Jets(qm.Select("id, name, color, uuid, identifier, cargo, manifest")).All(ctx, db)
 			if err != nil {
 				b.Fatal(err)
 			}
@@ -354,7 +357,7 @@ func BenchmarkKallaxSelectComplex(b *testing.B) {
 	query.NumInput = 2
 	query.Cols = []string{"id", "name", "color", "uuid", "identifier", "cargo", "manifest"}
 	query.Vals = [][]driver.Value{
-		[]driver.Value{
+		{
 			int64(1), int64(1), int64(1), "test", "str", nil, "{3}",
 		},
 	}
@@ -407,6 +410,7 @@ func BenchmarkBoilSelectComplex(b *testing.B) {
 	}
 
 	b.Run("boil", func(b *testing.B) {
+		ctx := context.Background()
 		for i := 0; i < b.N; i++ {
 			_, err = models.Jets(
 				qm.Select("id, name, color, uuid, identifier, cargo, manifest"),
@@ -415,7 +419,7 @@ func BenchmarkBoilSelectComplex(b *testing.B) {
 				qm.Limit(1),
 				qm.GroupBy("id"),
 				qm.Offset(1),
-			).All(db)
+			).All(ctx, db)
 			if err != nil {
 				b.Fatal(err)
 			}

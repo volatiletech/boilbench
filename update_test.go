@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"database/sql/driver"
 	"testing"
@@ -100,7 +101,7 @@ func BenchmarkKallaxUpdate(b *testing.B) {
 	query := jetQuery()
 	query.NumInput = -1
 	query.Vals = [][]driver.Value{
-		[]driver.Value{
+		{
 			int64(1), int64(1), int64(1), "test", nil, "test", "test", []byte("{5}"), []byte("{3}"),
 		},
 	}
@@ -153,8 +154,9 @@ func BenchmarkBoilUpdate(b *testing.B) {
 	}
 
 	b.Run("boil", func(b *testing.B) {
+		ctx := context.Background()
 		for i := 0; i < b.N; i++ {
-			_, err := store.Update(db, boil.Infer())
+			_, err := store.Update(ctx, db, boil.Infer())
 			if err != nil {
 				b.Fatal(err)
 			}

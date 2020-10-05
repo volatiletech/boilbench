@@ -1,10 +1,10 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"testing"
 
-	"xorm.io/xorm"
 	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
@@ -13,6 +13,7 @@ import (
 	"github.com/volatiletech/boilbench/models"
 	"github.com/volatiletech/boilbench/xorms"
 	"gopkg.in/gorp.v1"
+	"xorm.io/xorm"
 )
 
 func BenchmarkGORMDelete(b *testing.B) {
@@ -134,8 +135,9 @@ func BenchmarkBoilDelete(b *testing.B) {
 	}
 
 	b.Run("boil", func(b *testing.B) {
+		ctx := context.Background()
 		for i := 0; i < b.N; i++ {
-			_, err := store.Delete(db)
+			_, err := store.Delete(ctx, db)
 			if err != nil {
 				b.Fatal(err)
 			}

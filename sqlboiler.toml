@@ -1,5 +1,7 @@
 [psql]
-dbname= "boilbench"
-user = "postgres"
-pass = "postgres"
-host = "localhost"
+dbname = "postgres"
+host   = "localhost"
+port   = 5432
+user   = "postgres"
+pass   = "mysecretpassword"
+sslmode = "disable"
