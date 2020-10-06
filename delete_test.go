@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
 	"github.com/volatiletech/boilbench/kallaxes"
@@ -13,6 +12,7 @@ import (
 	"github.com/volatiletech/boilbench/models"
 	"github.com/volatiletech/boilbench/xorms"
 	"gopkg.in/gorp.v1"
+	"gorm.io/gorm"
 	"xorm.io/xorm"
 )
 
@@ -25,7 +25,7 @@ func BenchmarkGORMDelete(b *testing.B) {
 	exec.NumInput = -1
 	mimic.NewResult(exec)
 
-	gormdb, err := gorm.Open("mimic", "")
+	gormdb, err := gorm.Open(gormMimicDialector, &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}

@@ -9,7 +9,6 @@ import (
 	"gopkg.in/gorp.v1"
 	"gopkg.in/src-d/go-kallax.v1"
 
-	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
 	"github.com/volatiletech/boilbench/kallaxes"
@@ -17,6 +16,7 @@ import (
 	"github.com/volatiletech/boilbench/models"
 	"github.com/volatiletech/boilbench/xorms"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
+	"gorm.io/gorm"
 	"xorm.io/xorm"
 )
 
@@ -24,7 +24,7 @@ func BenchmarkGORMSelectAll(b *testing.B) {
 	query := jetQuery()
 	mimic.NewQuery(query)
 
-	gormdb, err := gorm.Open("mimic", "")
+	gormdb, err := gorm.Open(gormMimicDialector, &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
@@ -143,7 +143,7 @@ func BenchmarkGORMSelectSubset(b *testing.B) {
 	query := jetQuery()
 	mimic.NewQuery(query)
 
-	gormdb, err := gorm.Open("mimic", "")
+	gormdb, err := gorm.Open(gormMimicDialector, &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
@@ -271,7 +271,7 @@ func BenchmarkGORMSelectComplex(b *testing.B) {
 	query.NumInput = -1
 	mimic.NewQuery(query)
 
-	gormdb, err := gorm.Open("mimic", "")
+	gormdb, err := gorm.Open(gormMimicDialector, &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
