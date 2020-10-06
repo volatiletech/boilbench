@@ -1,6 +1,8 @@
 package kallaxes
 
-import "gopkg.in/src-d/go-kallax.v1"
+import "github.com/networkteam/go-kallax"
+
+//go:generate go run github.com/networkteam/go-kallax/generator/cli/kallax
 
 type Airport struct {
 	kallax.Model `table:"airports"`

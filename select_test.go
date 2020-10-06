@@ -6,8 +6,8 @@ import (
 	"database/sql/driver"
 	"testing"
 
+	"github.com/networkteam/go-kallax"
 	"gopkg.in/gorp.v1"
-	"gopkg.in/src-d/go-kallax.v1"
 
 	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"

@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/jinzhu/gorm"
+	"github.com/networkteam/go-kallax"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
 	"github.com/volatiletech/boilbench/kallaxes"
@@ -14,7 +15,6 @@ import (
 	"github.com/volatiletech/boilbench/xorms"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"gopkg.in/gorp.v1"
-	"gopkg.in/src-d/go-kallax.v1"
 	"xorm.io/xorm"
 )
 
