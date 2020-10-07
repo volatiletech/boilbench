@@ -7,13 +7,11 @@ import (
 
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
-	"github.com/volatiletech/boilbench/kallaxes"
 	"github.com/volatiletech/boilbench/mimic"
 	"github.com/volatiletech/boilbench/models"
 	"github.com/volatiletech/boilbench/xorms"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"gopkg.in/gorp.v1"
-	"gopkg.in/src-d/go-kallax.v1"
 	"gorm.io/gorm"
 	"xorm.io/xorm"
 )
@@ -90,36 +88,6 @@ func BenchmarkXORMInsert(b *testing.B) {
 	b.Run("xorm", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			_, err := xormdb.Insert(&store)
-			if err != nil {
-				b.Fatal(err)
-			}
-		}
-	})
-}
-
-func BenchmarkKallaxInsert(b *testing.B) {
-	store := kallaxes.Jet{
-		ID: 0,
-	}
-
-	exec := jetQueryInsert()
-	exec.NumInput = 8
-	mimic.NewResult(exec)
-
-	db, err := sql.Open("mimic", "")
-	if err != nil {
-		panic(err)
-	}
-
-	jetStore := kallaxes.NewJetStore(db)
-
-	b.Run("kallax", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			// Because Kallax has some persistence, we have to wipe this
-			// out each time.
-			store.Model = kallax.Model{}
-			store.ID = 0
-			err := jetStore.Insert(&store)
 			if err != nil {
 				b.Fatal(err)
 			}
