@@ -3,19 +3,15 @@ package main
 import (
 	"context"
 	"database/sql"
-	"database/sql/driver"
 	"testing"
-
-	"gopkg.in/gorp.v1"
-	"gopkg.in/src-d/go-kallax.v1"
 
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
-	"github.com/volatiletech/boilbench/kallaxes"
 	"github.com/volatiletech/boilbench/mimic"
 	"github.com/volatiletech/boilbench/models"
 	"github.com/volatiletech/boilbench/xorms"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
+	"gopkg.in/gorp.v1"
 	"gorm.io/gorm"
 	"xorm.io/xorm"
 )
@@ -84,36 +80,6 @@ func BenchmarkXORMSelectAll(b *testing.B) {
 				b.Fatal(err)
 			}
 			store = nil
-		}
-	})
-}
-
-func BenchmarkKallaxSelectAll(b *testing.B) {
-	query := jetQuery()
-	query.Vals = [][]driver.Value{
-		{
-			int64(1), int64(1), int64(1), "test", nil, "test", "test", []byte("{5}"), []byte("{3}"),
-		},
-	}
-	mimic.NewQuery(query)
-
-	db, err := sql.Open("mimic", "")
-	if err != nil {
-		panic(err)
-	}
-
-	jetStore := kallaxes.NewJetStore(db)
-
-	b.Run("kallax", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			rs, err := jetStore.Find(kallaxes.NewJetQuery())
-			if err != nil {
-				b.Fatal(err)
-			}
-			_, err = rs.All()
-			if err != nil {
-				b.Fatal(err)
-			}
 		}
 	})
 }
@@ -202,46 +168,6 @@ func BenchmarkXORMSelectSubset(b *testing.B) {
 				b.Fatal(err)
 			}
 			store = nil
-		}
-	})
-}
-
-func BenchmarkKallaxSelectSubset(b *testing.B) {
-	query := jetQuery()
-	query.Cols = []string{"id", "name", "color", "uuid", "identifier", "cargo", "manifest"}
-	query.Vals = [][]driver.Value{
-		{
-			int64(1), int64(1), int64(1), "test", "str", nil, "{3}",
-		},
-	}
-	mimic.NewQuery(query)
-
-	db, err := sql.Open("mimic", "")
-	if err != nil {
-		panic(err)
-	}
-
-	jetStore := kallaxes.NewJetStore(db)
-
-	b.Run("kallax", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			rs, err := jetStore.Find(
-				kallaxes.NewJetQuery().Select(
-					kallaxes.Schema.Jet.ID,
-					kallaxes.Schema.Jet.Name,
-					kallaxes.Schema.Jet.Color,
-					kallaxes.Schema.Jet.UUID,
-					kallaxes.Schema.Jet.Identifier,
-					kallaxes.Schema.Jet.Cargo,
-					kallaxes.Schema.Jet.Manifest,
-				))
-			if err != nil {
-				b.Fatal(err)
-			}
-			_, err = rs.All()
-			if err != nil {
-				b.Fatal(err)
-			}
 		}
 	})
 }
@@ -348,53 +274,6 @@ func BenchmarkXORMSelectComplex(b *testing.B) {
 				b.Fatal(err)
 			}
 			store = nil
-		}
-	})
-}
-
-func BenchmarkKallaxSelectComplex(b *testing.B) {
-	query := jetQuery()
-	query.NumInput = 2
-	query.Cols = []string{"id", "name", "color", "uuid", "identifier", "cargo", "manifest"}
-	query.Vals = [][]driver.Value{
-		{
-			int64(1), int64(1), int64(1), "test", "str", nil, "{3}",
-		},
-	}
-	mimic.NewQuery(query)
-
-	db, err := sql.Open("mimic", "")
-	if err != nil {
-		panic(err)
-	}
-
-	jetStore := kallaxes.NewJetStore(db)
-
-	b.Run("kallax", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			rs, err := jetStore.Find(
-				// Could not find GroupBy for this query
-				kallaxes.NewJetQuery().Select(
-					kallaxes.Schema.Jet.ID,
-					kallaxes.Schema.Jet.Name,
-					kallaxes.Schema.Jet.Color,
-					kallaxes.Schema.Jet.UUID,
-					kallaxes.Schema.Jet.Identifier,
-					kallaxes.Schema.Jet.Cargo,
-					kallaxes.Schema.Jet.Manifest,
-				).
-					Where(kallax.Gt(kallaxes.Schema.Jet.ID, 1)).
-					Where(kallax.Not(kallax.Eq(kallaxes.Schema.Jet.Name, "thing"))).
-					Limit(1).
-					Offset(1),
-			)
-			if err != nil {
-				b.Fatal(err)
-			}
-			_, err = rs.All()
-			if err != nil {
-				b.Fatal(err)
-			}
 		}
 	})
 }

@@ -8,7 +8,6 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
-	"github.com/volatiletech/boilbench/kallaxes"
 	"github.com/volatiletech/boilbench/mimic"
 	"github.com/volatiletech/boilbench/models"
 	"github.com/volatiletech/boilbench/xorms"
@@ -81,52 +80,6 @@ func BenchmarkXORMRawBind(b *testing.B) {
 			if err != nil {
 				b.Fatal(err)
 			}
-			store = nil
-		}
-	})
-}
-
-func BenchmarkKallaxRawBind(b *testing.B) {
-	query := jetQuery()
-	mimic.NewQuery(query)
-
-	db, err := sql.Open("mimic", "")
-	if err != nil {
-		panic(err)
-	}
-
-	jetStore := kallaxes.NewJetStore(db)
-
-	b.Run("kallax", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			var store []kallaxes.Jet
-			rs, err := jetStore.RawQuery("select * from jets")
-			if err != nil {
-				b.Fatal(err)
-			}
-
-			// This kind of discounts the benchmark, since this is not an ORM
-			// type wrap-function. It simply tunnels through to the annoying
-			// API that is database/sql.
-			for rs.Next() {
-				var jet kallaxes.Jet
-				err = rs.RawScan(
-					&jet.ID,
-					&jet.PilotID,
-					&jet.AirportID,
-					&jet.Name,
-					&jet.Color,
-					&jet.UUID,
-					&jet.Identifier,
-					&jet.Cargo,
-					&jet.Manifest,
-				)
-				if err != nil {
-					b.Fatal(err)
-				}
-				store = append(store, jet)
-			}
-
 			store = nil
 		}
 	})

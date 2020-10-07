@@ -7,7 +7,6 @@ import (
 
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
-	"github.com/volatiletech/boilbench/kallaxes"
 	"github.com/volatiletech/boilbench/mimic"
 	"github.com/volatiletech/boilbench/models"
 	"github.com/volatiletech/boilbench/xorms"
@@ -87,32 +86,6 @@ func BenchmarkXORMDelete(b *testing.B) {
 	b.Run("xorm", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			_, err := xormdb.Delete(&store)
-			if err != nil {
-				b.Fatal(err)
-			}
-		}
-	})
-}
-
-func BenchmarkKallaxDelete(b *testing.B) {
-	store := kallaxes.Jet{
-		ID: 1,
-	}
-
-	exec := jetExec()
-	exec.NumInput = -1
-	mimic.NewResult(exec)
-
-	db, err := sql.Open("mimic", "")
-	if err != nil {
-		panic(err)
-	}
-
-	jetStore := kallaxes.NewJetStore(db)
-
-	b.Run("kallax", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			err := jetStore.Delete(&store)
 			if err != nil {
 				b.Fatal(err)
 			}
