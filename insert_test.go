@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
 	"github.com/volatiletech/boilbench/kallaxes"
@@ -15,6 +14,7 @@ import (
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"gopkg.in/gorp.v1"
 	"gopkg.in/src-d/go-kallax.v1"
+	"gorm.io/gorm"
 	"xorm.io/xorm"
 )
 
@@ -27,7 +27,7 @@ func BenchmarkGORMInsert(b *testing.B) {
 	exec.NumInput = -1
 	mimic.NewResult(exec)
 
-	gormdb, err := gorm.Open("mimic", "")
+	gormdb, err := gorm.Open(gormMimicDialector, &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}

@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/jinzhu/gorm"
 	"github.com/volatiletech/boilbench/mimic"
+	"gorm.io/driver/postgres"
 	"xorm.io/xorm/dialects"
 )
 
@@ -142,16 +142,14 @@ func jetExecUpdate() mimic.QueryResult {
 	}
 }
 
+var gormMimicDialector = postgres.New(postgres.Config{
+	DriverName: "mimic",
+})
+
 func TestMain(m *testing.M) {
 	dialects.RegisterDriver("mimic", &mimic.XormDriver{})
 	if dialects.QueryDriver("mimic") == nil {
 		panic("failed to register xorm driver")
-	}
-
-	if dialect, ok := gorm.GetDialect("postgres"); ok {
-		gorm.RegisterDialect("mimic", dialect)
-	} else {
-		panic("failed to register gorm dialect")
 	}
 
 	code := m.Run()

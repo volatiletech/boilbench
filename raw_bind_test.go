@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/jinzhu/gorm"
 	"github.com/jmoiron/sqlx"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
@@ -15,6 +14,7 @@ import (
 	"github.com/volatiletech/boilbench/xorms"
 	"github.com/volatiletech/sqlboiler/v4/queries"
 	"gopkg.in/gorp.v1"
+	"gorm.io/gorm"
 	"xorm.io/xorm"
 )
 
@@ -22,7 +22,7 @@ func BenchmarkGORMRawBind(b *testing.B) {
 	query := jetQuery()
 	mimic.NewQuery(query)
 
-	gormdb, err := gorm.Open("mimic", "")
+	gormdb, err := gorm.Open(gormMimicDialector, &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
