@@ -3,12 +3,14 @@ package main
 import (
 	"context"
 	"database/sql"
+	"github.com/gobuffalo/pop/v6"
 	"testing"
 
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
 	"github.com/volatiletech/boilbench/mimic"
 	"github.com/volatiletech/boilbench/models"
+	"github.com/volatiletech/boilbench/pops"
 	"github.com/volatiletech/boilbench/xorms"
 	"gopkg.in/gorp.v1"
 	"gorm.io/gorm"
@@ -111,6 +113,36 @@ func BenchmarkBoilDelete(b *testing.B) {
 		ctx := context.Background()
 		for i := 0; i < b.N; i++ {
 			_, err := store.Delete(ctx, db)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}
+
+func BenchmarkPOPDelete(b *testing.B) {
+	store := pops.Jet{
+		ID: 1,
+	}
+
+	dsn := "postgres://BenchmarkPOPDelete"
+	exec := jetExec()
+	exec.NumInput = -1
+	mimic.NewResultDSN(dsn, exec)
+
+	popdb, err := pop.NewConnection(&pop.ConnectionDetails{Driver: "mimic", Dialect: "postgres", URL: dsn})
+	if err != nil {
+		panic(err)
+	}
+
+	err = popdb.Open()
+	if err != nil {
+		panic(err)
+	}
+
+	b.Run("pop", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			err := popdb.Destroy(&store)
 			if err != nil {
 				b.Fatal(err)
 			}

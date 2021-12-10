@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"database/sql"
+	"github.com/gobuffalo/pop/v6"
 	"testing"
 
 	"github.com/jmoiron/sqlx"
@@ -121,6 +122,33 @@ func BenchmarkBoilRawBind(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			var slice []models.Jet
 			err = queries.Raw("select * from jets").Bind(context.Background(), db, &slice)
+			if err != nil {
+				b.Fatal(err)
+			}
+			slice = nil
+		}
+	})
+}
+
+func BenchmarkPopRawBind(b *testing.B) {
+	dsn := "postgres://BenchmarkPopRawBind"
+	query := jetQuery()
+	mimic.NewQueryDSN(dsn, query)
+
+	popdb, err := pop.NewConnection(&pop.ConnectionDetails{Driver: "mimic", Dialect: "postgres", URL: dsn})
+	if err != nil {
+		panic(err)
+	}
+
+	err = popdb.Open()
+	if err != nil {
+		panic(err)
+	}
+
+	b.Run("boil", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			var slice []models.Jet
+			err = popdb.RawQuery("select * from jets").All(&slice)
 			if err != nil {
 				b.Fatal(err)
 			}
