@@ -145,7 +145,7 @@ func BenchmarkPopRawBind(b *testing.B) {
 		panic(err)
 	}
 
-	b.Run("boil", func(b *testing.B) {
+	b.Run("pop", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			var slice []models.Jet
 			err = popdb.RawQuery("select * from jets").All(&slice)
