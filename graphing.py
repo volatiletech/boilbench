@@ -4,7 +4,7 @@
 import glob
 import os
 import errno
-import plotly.plotly as plotly
+import chart_studio.plotly as plotly
 import plotly.graph_objs as graphing
 
 def make_graph(filename, title, ytitle, string_data):
@@ -42,7 +42,7 @@ def make_graph(filename, title, ytitle, string_data):
         autosize = False,
         width = 300,
         height = 300,
-        margin = graphing.Margin(
+        margin = graphing.layout.Margin(
            l = 60, r = 30, b = 60, t = 40, pad = 4 
         ),
         xaxis = graphing.XAxis(
@@ -51,7 +51,7 @@ def make_graph(filename, title, ytitle, string_data):
         yaxis = graphing.YAxis(
             title = ytitle
         ),
-        bargap = 5
+        bargap = 1
     )
 
     data = graphing.Data([trace])

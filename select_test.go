@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"database/sql"
+	"github.com/gobuffalo/pop/v6"
 	"testing"
 
 	"github.com/volatiletech/boilbench/gorms"
@@ -104,6 +105,33 @@ func BenchmarkBoilSelectAll(b *testing.B) {
 	})
 }
 
+func BenchmarkPopSelectAll(b *testing.B) {
+	dsn := "postgres://BenchmarkPopSelectAll"
+
+	query := jetQuery()
+	mimic.NewQueryDSN(dsn, query)
+
+	popdb, err := pop.NewConnection(&pop.ConnectionDetails{Driver: "mimic", Dialect: "postgres", URL: dsn})
+	if err != nil {
+		panic(err)
+	}
+
+	err = popdb.Open()
+	if err != nil {
+		panic(err)
+	}
+
+	b.Run("pop", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			var store []gorps.Jet
+			err = popdb.All(&store)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}
+
 func BenchmarkGORMSelectSubset(b *testing.B) {
 	var store []gorms.Jet
 	query := jetQuery()
@@ -185,6 +213,33 @@ func BenchmarkBoilSelectSubset(b *testing.B) {
 		ctx := context.Background()
 		for i := 0; i < b.N; i++ {
 			_, err = models.Jets(qm.Select("id, name, color, uuid, identifier, cargo, manifest")).All(ctx, db)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}
+
+func BenchmarkPopSelectSubset(b *testing.B) {
+	dsn := "postgres://BenchmarkPopSelectSubset"
+
+	query := jetQuery()
+	mimic.NewQueryDSN(dsn, query)
+
+	popdb, err := pop.NewConnection(&pop.ConnectionDetails{Driver: "mimic", Dialect: "postgres", URL: dsn})
+	if err != nil {
+		panic(err)
+	}
+
+	err = popdb.Open()
+	if err != nil {
+		panic(err)
+	}
+
+	b.Run("pop", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			var store []gorps.Jet
+			err = popdb.Select("id, name, color, uuid, identifier, cargo, manifest").All(&store)
 			if err != nil {
 				b.Fatal(err)
 			}
@@ -299,6 +354,45 @@ func BenchmarkBoilSelectComplex(b *testing.B) {
 				qm.GroupBy("id"),
 				qm.Offset(1),
 			).All(ctx, db)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}
+
+func BenchmarkPopSelectComplex(b *testing.B) {
+	dsn := "postgres://BenchmarkPopSelectComplex"
+
+	query := jetQuery()
+	query.NumInput = -1
+	mimic.NewQueryDSN(dsn, query)
+
+	popdb, err := pop.NewConnection(&pop.ConnectionDetails{Driver: "mimic", Dialect: "postgres", URL: dsn})
+	if err != nil {
+		panic(err)
+	}
+
+	err = popdb.Open()
+	if err != nil {
+		panic(err)
+	}
+
+	b.Run("pop", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			var store []gorps.Jet
+			err = popdb.Select(
+				"id, name, color, uuid, identifier, cargo, manifest").
+				Where("id > ? AND name <> ?", 1, "thing").
+				Limit(1).
+				GroupBy("id").
+				// Offset does not exist, you need to use a paginator.
+				// The Paginator however does another query, which breaks
+				// this integration here, so I have removed it.
+				//
+				//
+				// Paginate(1, 1).
+				All(&store)
 			if err != nil {
 				b.Fatal(err)
 			}

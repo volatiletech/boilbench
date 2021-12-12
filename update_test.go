@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"database/sql"
+	"github.com/gobuffalo/pop/v6"
+	"github.com/volatiletech/boilbench/pops"
 	"testing"
 
 	"github.com/volatiletech/boilbench/gorms"
@@ -112,6 +114,36 @@ func BenchmarkBoilUpdate(b *testing.B) {
 		ctx := context.Background()
 		for i := 0; i < b.N; i++ {
 			_, err := store.Update(ctx, db, boil.Infer())
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}
+
+func BenchmarkPopUpdate(b *testing.B) {
+	dsn := "postgres://BenchmarkPopUpdate"
+	store := pops.Jet{
+		ID: 1,
+	}
+
+	exec := jetExecUpdate()
+	exec.NumInput = -1
+	mimic.NewResultDSN(dsn, exec)
+
+	popdb, err := pop.NewConnection(&pop.ConnectionDetails{Driver: "mimic", Dialect: "postgres", URL: dsn})
+	if err != nil {
+		panic(err)
+	}
+
+	err = popdb.Open()
+	if err != nil {
+		panic(err)
+	}
+
+	b.Run("pop", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			err := popdb.Update(&store)
 			if err != nil {
 				b.Fatal(err)
 			}
