@@ -3,9 +3,12 @@ package main
 import (
 	"context"
 	"database/sql"
-	"github.com/gobuffalo/pop/v6"
 	"testing"
 
+	"github.com/gobuffalo/pop/v6"
+	"github.com/olachat/gola/coredb"
+
+	golas "github.com/volatiletech/boilbench/gola"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
 	"github.com/volatiletech/boilbench/mimic"
@@ -34,6 +37,32 @@ func BenchmarkGORMDelete(b *testing.B) {
 	b.Run("gorm", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			err := gormdb.Delete(&store).Error
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}
+
+func BenchmarkGOLADelete(b *testing.B) {
+	pk := 1
+
+	exec := jetExec()
+	exec.NumInput = -1
+	mimic.NewResult(exec)
+
+	db, err := sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+
+	coredb.Setup(func(_ string, _ coredb.DBMode) *sql.DB {
+		return db
+	})
+
+	b.Run("gola", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			err := golas.DeleteByPK(pk)
 			if err != nil {
 				b.Fatal(err)
 			}
