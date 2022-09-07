@@ -8,10 +8,11 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/volatiletech/null/v8"
 	"github.com/olachat/gola/coredb"
 )
 
-const DBName string = "xianshi"
+const DBName string = "mimic"
 const TableName string = "jets"
 
 // Jet represents `jets` table
@@ -277,22 +278,16 @@ func (c *Name) UnmarshalJSON(data []byte) error {
 //
 type Color struct {
 	_updated bool
-	val      string
+	val null.String
 }
 
-func (c *Color) GetColor() string {
+func (c *Color) GetColor() null.String {
 	return c.val
 }
 
-func (c *Color) SetColor(val string) bool {
-	if c.val == val {
-		return false
-	}
-	c._updated = true
+func (c *Color) SetColor(val null.String) {
 	c.val = val
-	return true
 }
-
 func (c *Color) IsUpdated() bool {
 	return c._updated
 }

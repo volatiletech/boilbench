@@ -3,9 +3,12 @@ package main
 import (
 	"context"
 	"database/sql"
-	"github.com/gobuffalo/pop/v6"
 	"testing"
 
+	"github.com/gobuffalo/pop/v6"
+	"github.com/olachat/gola/coredb"
+
+	golas "github.com/volatiletech/boilbench/gola"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
 	"github.com/volatiletech/boilbench/mimic"
@@ -32,6 +35,30 @@ func BenchmarkGORMSelectAll(b *testing.B) {
 			err := gormdb.Find(&store).Error
 			if err != nil {
 				b.Fatal(err)
+			}
+			store = nil
+		}
+	})
+}
+
+func BenchmarkGOLASelectAll(b *testing.B) {
+	query := jetQuery()
+	mimic.NewQuery(query)
+
+	db, err := sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+
+	coredb.Setup(func(_ string, _ coredb.DBMode) *sql.DB {
+		return db
+	})
+
+	b.Run("gola", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			store := golas.Select().All()
+			if len(store) != 5 {
+				b.Fatal("gola load failed: ")
 			}
 			store = nil
 		}
@@ -134,7 +161,7 @@ func BenchmarkPopSelectAll(b *testing.B) {
 
 func BenchmarkGORMSelectSubset(b *testing.B) {
 	var store []gorms.Jet
-	query := jetQuery()
+	query := jetQuerySubset()
 	mimic.NewQuery(query)
 
 	gormdb, err := gorm.Open(gormMimicDialector, &gorm.Config{})
@@ -153,8 +180,40 @@ func BenchmarkGORMSelectSubset(b *testing.B) {
 	})
 }
 
+func BenchmarkGOLASelectSubset(b *testing.B) {
+	query := jetQuerySubset()
+	mimic.NewQuery(query)
+
+	db, err := sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+
+	coredb.Setup(func(_ string, _ coredb.DBMode) *sql.DB {
+		return db
+	})
+
+	b.Run("gola", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			store := golas.SelectFields[struct {
+				golas.Id
+				golas.Name
+				golas.Color
+				golas.Uuid
+				golas.Identifier
+				golas.Cargo
+				golas.Manifest
+			}]().All()
+			if len(store) != 5 {
+				b.Fatal("gola load failed: ")
+			}
+			store = nil
+		}
+	})
+}
+
 func BenchmarkGORPSelectSubset(b *testing.B) {
-	query := jetQuery()
+	query := jetQuerySubset()
 	mimic.NewQuery(query)
 
 	db, err := sql.Open("mimic", "")
@@ -180,7 +239,7 @@ func BenchmarkGORPSelectSubset(b *testing.B) {
 }
 
 func BenchmarkXORMSelectSubset(b *testing.B) {
-	query := jetQuery()
+	query := jetQuerySubset()
 	mimic.NewQuery(query)
 
 	xormdb, err := xorm.NewEngine("mimic", "")
@@ -201,7 +260,7 @@ func BenchmarkXORMSelectSubset(b *testing.B) {
 }
 
 func BenchmarkBoilSelectSubset(b *testing.B) {
-	query := jetQuery()
+	query := jetQuerySubset()
 	mimic.NewQuery(query)
 
 	db, err := sql.Open("mimic", "")
@@ -223,7 +282,7 @@ func BenchmarkBoilSelectSubset(b *testing.B) {
 func BenchmarkPopSelectSubset(b *testing.B) {
 	dsn := "postgres://BenchmarkPopSelectSubset"
 
-	query := jetQuery()
+	query := jetQuerySubset()
 	mimic.NewQueryDSN(dsn, query)
 
 	popdb, err := pop.NewConnection(&pop.ConnectionDetails{Driver: "mimic", Dialect: "postgres", URL: dsn})
@@ -268,6 +327,41 @@ func BenchmarkGORMSelectComplex(b *testing.B) {
 				Select("id, name, color, uuid, identifier, cargo, manifest").
 				Find(&store).Error
 			if err != nil {
+				b.Fatal(err)
+			}
+			store = nil
+		}
+	})
+}
+
+func BenchmarkGOLASelectComplex(b *testing.B) {
+	query := jetQuerySubset()
+	query.NumInput = -1
+	mimic.NewQuery(query)
+
+	db, err := sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+
+	coredb.Setup(func(_ string, _ coredb.DBMode) *sql.DB {
+		return db
+	})
+
+	type miniJet struct {
+		golas.Id
+		golas.Name
+		golas.Color
+		golas.Uuid
+		golas.Identifier
+		golas.Cargo
+		golas.Manifest
+	}
+
+	b.Run("gola", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			store, err := golas.FindFields[miniJet]("where id > 1 and name <> ? group by id limit ?, ?", 1, "thing", 1, 1)
+			if store == nil {
 				b.Fatal(err)
 			}
 			store = nil
