@@ -3,10 +3,13 @@ package main
 import (
 	"context"
 	"database/sql"
-	"github.com/gobuffalo/pop/v6"
 	"testing"
 
+	"github.com/gobuffalo/pop/v6"
+	"github.com/olachat/gola/coredb"
+
 	"github.com/jmoiron/sqlx"
+	golas "github.com/volatiletech/boilbench/gola"
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
 	"github.com/volatiletech/boilbench/mimic"
@@ -32,6 +35,30 @@ func BenchmarkGORMRawBind(b *testing.B) {
 			var store []gorms.Jet
 			err := gormdb.Raw("select * from jets").Scan(&store).Error
 			if err != nil {
+				b.Fatal(err)
+			}
+			store = nil
+		}
+	})
+}
+
+func BenchmarkGOLARawBind(b *testing.B) {
+	query := jetQuery()
+	mimic.NewQuery(query)
+
+	db, err := sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+
+	coredb.Setup(func(_ string, _ coredb.DBMode) *sql.DB {
+		return db
+	})
+
+	b.Run("gola", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			store, err := coredb.Query[golas.Jet]("minic", "select * from jets")
+			if store == nil {
 				b.Fatal(err)
 			}
 			store = nil

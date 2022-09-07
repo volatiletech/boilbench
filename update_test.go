@@ -3,9 +3,12 @@ package main
 import (
 	"context"
 	"database/sql"
-	"github.com/gobuffalo/pop/v6"
-	"github.com/volatiletech/boilbench/pops"
 	"testing"
+
+	"github.com/gobuffalo/pop/v6"
+	"github.com/olachat/gola/coredb"
+	golas "github.com/volatiletech/boilbench/gola"
+	"github.com/volatiletech/boilbench/pops"
 
 	"github.com/volatiletech/boilbench/gorms"
 	"github.com/volatiletech/boilbench/gorps"
@@ -35,6 +38,32 @@ func BenchmarkGORMUpdate(b *testing.B) {
 	b.Run("gorm", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			err := gormdb.Model(&store).Updates(store).Error
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}
+
+func BenchmarkGOLAUpdate(b *testing.B) {
+	exec := jetExecUpdate()
+	exec.NumInput = -1
+	mimic.NewResult(exec)
+
+	db, err := sql.Open("mimic", "")
+	if err != nil {
+		panic(err)
+	}
+
+	coredb.Setup(func(_ string, _ coredb.DBMode) *sql.DB {
+		return db
+	})
+
+	b.Run("gola", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			store := golas.NewWithPK(1)
+			store.SetName("name")
+			_, err := store.Update()
 			if err != nil {
 				b.Fatal(err)
 			}
