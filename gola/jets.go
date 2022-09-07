@@ -8,8 +8,9 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/volatiletech/null/v8"
 	"github.com/olachat/gola/coredb"
+
+	"github.com/volatiletech/null/v8"
 )
 
 const DBName string = "mimic"
@@ -278,16 +279,22 @@ func (c *Name) UnmarshalJSON(data []byte) error {
 //
 type Color struct {
 	_updated bool
-	val null.String
+	val      null.String
 }
 
 func (c *Color) GetColor() null.String {
 	return c.val
 }
 
-func (c *Color) SetColor(val null.String) {
+func (c *Color) SetColor(val null.String) bool {
+	if c.val == val {
+		return false
+	}
+	c._updated = true
 	c.val = val
+	return true
 }
+
 func (c *Color) IsUpdated() bool {
 	return c._updated
 }
